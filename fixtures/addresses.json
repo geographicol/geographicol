@@ -1,0 +1,21 @@
+[
+  {
+    "id": "kr-45-12-30-local-3-variants",
+    "inputs": [
+      "Carrera 45 # 12-30 Local 3",
+      "Cra 45 No 12 30 Loc 3",
+      "KR 45 12 30 LC 3",
+      "Cr. 45 #12 - 30, Local 3",
+      "carrera 45 numero 12-30 local 3"
+    ],
+    "expected": {
+      "streetType": "KR",
+      "streetNumber": 45,
+      "crossNumber": 12,
+      "plateNumber": 30,
+      "complements": [{ "type": "LOCAL", "value": "3" }],
+      "canonical": "KR 45 12 30 LC 3"
+    },
+    "minConfidence": 0.9
+  }
+]
