@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "geographicol" }]
-keywords = ["colombia", "address", "normalization", "direccion", "dane"]
+keywords = ["colombia", "address", "address-normalization", "direccion", "igac", "dian"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",

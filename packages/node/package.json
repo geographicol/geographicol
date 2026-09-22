@@ -6,9 +6,7 @@
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,14 +30,7 @@
     "url": "git+https://github.com/geographicol/geographicol.git",
     "directory": "packages/node"
   },
-  "keywords": [
-    "colombia",
-    "address",
-    "normalization",
-    "direccion",
-    "dane",
-    "geocoding"
-  ],
+  "keywords": ["colombia", "address", "address-normalization", "direccion", "igac", "dian"],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
