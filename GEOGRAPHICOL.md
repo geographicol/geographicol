@@ -280,7 +280,7 @@ No author name anywhere. Author field in `package.json` / `pyproject.toml` is `g
 - [x] CI green on all matrix versions
 - [x] GitHub org `geographicol` public with the repo
 
-Milestone 1 complete: 0.1.0 published 2026-09-22. Changes since then (named streets, `catastral`/`igac` styles) are on `main`, awaiting release as 0.2.0.
+Milestone 1 complete: 0.1.0 published 2026-09-22. 0.2.0 (named streets, `catastral`/`igac` styles, Cali's attached N) published the same day.
 
 ## Milestone 2 (next brief): minimal paid API
 
