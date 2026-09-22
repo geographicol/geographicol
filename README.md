@@ -9,7 +9,7 @@ geographicol turns the many ways Colombians write an address — `Cra 45 No 12 3
 | [`@geographicol/address`](packages/node) | TypeScript / JavaScript | `npm install @geographicol/address` |
 | [`geographicol`](packages/python) | Python 3.10+ | `pip install geographicol` |
 
-> Status: pre-release, under active development.
+> Status: 0.1.0 released. Early days; the rules are in [`docs/nomenclature.md`](docs/nomenclature.md).
 
 ## License
 

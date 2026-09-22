@@ -271,13 +271,13 @@ No author name anywhere. Author field in `package.json` / `pyproject.toml` is `g
 
 ## Definition of done for Milestone 1
 
-- [ ] `docs/nomenclature.md` written and reviewed
-- [ ] `fixtures/addresses.json` with ≥60 groups
-- [ ] Node lib passes 100% of fixtures, published to npm
-- [ ] Python lib passes 100% of fixtures, published to PyPI
-- [ ] Both READMEs with before/after tables
-- [ ] CI green on all matrix versions
-- [ ] GitHub org `geographicol` public with the repo
+- [ ] `docs/nomenclature.md` written and reviewed (written; review and open questions pending)
+- [x] `fixtures/addresses.json` with ≥60 groups
+- [x] Node lib passes 100% of fixtures, published to npm
+- [x] Python lib passes 100% of fixtures, published to PyPI
+- [x] Both READMEs with before/after tables
+- [x] CI green on all matrix versions
+- [x] GitHub org `geographicol` public with the repo
 
 ## Milestone 2 (next brief): minimal paid API
 
