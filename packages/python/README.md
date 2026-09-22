@@ -24,7 +24,7 @@ pip install geographicol
 ```python
 from geographicol import is_valid, normalize, parse
 
-normalize("Cra 7 # 45-12 Torre 2 Apto 501")                # "KR 7 45 12 TO 2 APTO 501"
+normalize("Cra 7 # 45-12 Torre 2 Apto 501")  # "KR 7 45 12 TO 2 APTO 501"
 normalize("Cra 7 # 45-12 Torre 2 Apto 501", style="dian")  # "CR 7 45 12 TO 2 AP 501"
 is_valid("Calle 45")  # False: no cross street
 ```
