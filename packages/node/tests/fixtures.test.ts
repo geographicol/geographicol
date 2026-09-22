@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { parse } from "../src/index.js";
 
 interface FixtureGroup {
   id: string;
@@ -13,17 +14,38 @@ interface FixtureGroup {
 const fixturesPath = fileURLToPath(new URL("../../../fixtures/addresses.json", import.meta.url));
 const fixtures: FixtureGroup[] = JSON.parse(readFileSync(fixturesPath, "utf8"));
 
-// Structural checks only; per-input assertions arrive with the parser.
+const TOLERANCE = 1e-9;
+const STRING_KEYS = ["canonical", "canonicalDian", "normalized", "warnings"];
+
 describe("fixtures file", () => {
   it("has at least 60 groups with unique ids", () => {
     expect(fixtures.length).toBeGreaterThanOrEqual(60);
     expect(new Set(fixtures.map((g) => g.id)).size).toBe(fixtures.length);
   });
+});
 
-  it("gives every group inputs, expectations and warnings", () => {
-    for (const group of fixtures) {
-      expect(group.inputs.length, group.id).toBeGreaterThan(0);
-      expect(Array.isArray(group.expected.warnings), group.id).toBe(true);
+describe.each(fixtures)("$id", (group) => {
+  it.each(group.inputs)("%j", (input) => {
+    const result = parse(input);
+    const { expected } = group;
+
+    for (const [key, value] of Object.entries(expected)) {
+      if (STRING_KEYS.includes(key)) continue;
+      expect(result[key as keyof typeof result], key).toEqual(value);
+    }
+    if ("canonical" in expected) expect(result.canonical).toBe(expected.canonical);
+    if ("canonicalDian" in expected) {
+      expect(parse(input, { style: "dian" }).canonical).toBe(expected.canonicalDian);
+    }
+    if ("normalized" in expected) expect(result.normalized).toBe(expected.normalized);
+    if ("warnings" in expected) {
+      expect([...result.warnings].sort()).toEqual([...(expected.warnings as string[])].sort());
+    }
+    if (group.minConfidence !== undefined) {
+      expect(result.confidence).toBeGreaterThanOrEqual(group.minConfidence - TOLERANCE);
+    }
+    if (group.maxConfidence !== undefined) {
+      expect(result.confidence).toBeLessThanOrEqual(group.maxConfidence + TOLERANCE);
     }
   });
 });

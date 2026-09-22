@@ -120,6 +120,10 @@ interface ParseOptions {
 }
 ```
 
+### Python naming
+
+Same behavior, Python conventions: `parse(input, style="igac", strict=False)`, `normalize(...)`, `is_valid(input)`. `ParsedAddress` and `Complement` are dataclasses with snake_case fields (`street_type`, `cross_number`, ...). The fixtures use the camelCase names, and the Python tests map them.
+
 ## Normalization rules
 
 Full rules live in `docs/nomenclature.md` — write that file first, then implement from it. Summary of what must be handled:
