@@ -1,7 +1,7 @@
 // Placeholder public API. The parser is implemented from docs/nomenclature.md.
 
 export interface ParseOptions {
-  style?: "dane" | "readable";
+  style?: "igac" | "dian" | "readable";
   strict?: boolean;
 }
 

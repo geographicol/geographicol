@@ -13,8 +13,9 @@
       "streetNumber": 45,
       "crossNumber": 12,
       "plateNumber": 30,
-      "complements": [{ "type": "LOCAL", "value": "3" }],
-      "canonical": "KR 45 12 30 LC 3"
+      "complements": [{ "type": "LOCAL", "code": "LC", "value": "3" }],
+      "canonical": "KR 45 12 30 LC 3",
+      "canonicalDian": "CR 45 12 30 LC 3"
     },
     "minConfidence": 0.9
   }

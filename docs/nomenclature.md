@@ -15,7 +15,11 @@ There is no single national address standard with the force of law. Two official
 
 We could not find an address-abbreviation standard published by DANE itself. DANE's role is DIVIPOLA (the official list of departments and municipalities), which only matters to the API, not to the lite libraries.
 
-**Decision:** the IGAC cadastral table is the primary source for canonical codes. It is the cadastral authority, it matches the `KR` code already used across the ecosystem, and it comes with an element-order specification. Every DIAN code is still **accepted as input**. Where the two differ, section 9 lists both.
+**Decision:** we implement both, not one. Both tables describe the same address elements and differ only in the codes they write, so there is one set of parsing rules and one code table per standard (section 9). The output style is chosen with `options.style`: `igac` (the default), `dian` or `readable`. Every code from either table is accepted as input, whatever the style.
+
+**Decision:** IGAC is the default because it is the cadastral authority, its `KR` code is the one most used across the ecosystem, and it comes with an element-order specification.
+
+**Decision (public API change):** the brief named the default style `dane`. DANE has no address standard, so the style is renamed `igac` before anything is published.
 
 ## 2. Anatomy of an address
 
@@ -105,34 +109,39 @@ Matching is case-insensitive, ignores accents and a trailing period, and is atte
 
 A complement is a keyword followed by a value. The value runs until the next complement keyword, a comma, or the end of the address. It is uppercased and single-spaced. Multiple complements keep their order: `Torre 2 Apto 501` → `TO 2 APTO 501`.
 
-| Type | Canonical code | Accepted inputs |
-|---|---|---|
-| APARTAMENTO | `APTO` | apartamento, aparta, apto, apt, ap |
-| TORRE | `TO` | torre, to, tr * |
-| LOCAL | `LC` | local, loc, lc, lo |
-| OFICINA | `OF` | oficina, ofi, ofc, of |
-| PISO | `PI` | piso, pi, p * |
-| INTERIOR | `IN` | interior, int, in |
-| BLOQUE | `BL` | bloque, blq, bl |
-| MANZANA | `MZ` | manzana, mza, mz |
-| CASA | `CA` | casa, ca |
-| ETAPA | `ET` | etapa, et |
-| CONJUNTO | `CONJ` | conjunto, conj, cj |
-| EDIFICIO | `ED` | edificio, edif, ed |
-| BODEGA | `BG` | bodega, bod, bg |
-| LOTE | `LT` | lote, lt |
-| BARRIO | `BR` | barrio, brr, br, bo, b/ |
-| OTRO | *see below* | any other code from the IGAC or DIAN tables |
+Each complement is returned as `{ type, code, value }`:
+- `type` is the `ComplementType`.
+- `code` is the IGAC code, independent of the output style (section 9).
+- `value` is the value only, without the keyword.
+
+`Torre 2 Apto 501` → `[{ type: "TORRE", code: "TO", value: "2" }, { type: "APARTAMENTO", code: "APTO", value: "501" }]`.
+
+| Type | IGAC code | DIAN code | Accepted inputs |
+|---|---|---|---|
+| APARTAMENTO | `APTO` | `AP` | apartamento, aparta, apto, apt, ap |
+| TORRE | `TO` | `TO` | torre, to, tr * |
+| LOCAL | `LC` | `LC` | local, loc, lc, lo |
+| OFICINA | `OF` | `OF` | oficina, ofi, ofc, of |
+| PISO | `PI` | `P` | piso, pi, p * |
+| INTERIOR | `IN` | `IN` | interior, int, in |
+| BLOQUE | `BL` | `BL` | bloque, blq, bl |
+| MANZANA | `MZ` | `MZ` | manzana, mza, mz |
+| CASA | `CA` | `CA` | casa, ca |
+| ETAPA | `ET` | `ET` | etapa, et |
+| CONJUNTO | `CONJ` | `CONJ` | conjunto, conj, cj |
+| EDIFICIO | `ED` | `ED` | edificio, edif, ed |
+| BODEGA | `BG` | `BG` | bodega, bod, bg |
+| LOTE | `LT` | `LT` | lote, lt |
+| BARRIO | `BR` | `BRR` | barrio, brr, br, bo, b/ |
+| OTRO | *section 9* | *section 9* | any other code from the IGAC or DIAN tables |
 
 \* Context-dependent aliases:
 - `tr` is TORRE only after the vía principal and the placa have been parsed. At the start of an address it is Transversal.
 - `p` is PISO only when followed by a number.
 
-**Decision:** `APTO` and `PI` are the IGAC codes, so they replace DIAN's `AP` and `P`.
-
 **Decision:** `cs` is not accepted as CASA, contrary to the brief. Both IGAC and DIAN define `CS` as *Consultorio*, so it maps to OTRO.
 
-**OTRO:** other recognized codes such as `PH` (penthouse), `GJ` (garaje), `SS` (semisótano), `CC` (centro comercial), `CS` (consultorio), `UN` (unidad) and `URB` (urbanización) become `{ type: "OTRO", value: "<CODE> <value>" }`, for example `{ type: "OTRO", value: "PH 2" }`. **Open question:** whether a later version should add these types to `ComplementType` instead.
+**OTRO:** other recognized codes, listed in section 9, become `{ type: "OTRO", code: "<IGAC code>", value }`, for example `PH 2` → `{ type: "OTRO", code: "PH", value: "2" }`. **Open question:** whether a later version should give the common ones their own `ComplementType`.
 
 ## 8. Locality and department
 
@@ -140,48 +149,84 @@ A complement is a keyword followed by a value. The value runs until the next com
 - **Without commas:** a trailing run of words with no digits, after the plate and complements, is the locality: `KR 45 12 30 Medellín`.
 - Locality and department keep their original spelling, trimmed. They are never checked against a city list in the lite library, and their presence always adds the warning `LOCALITY_UNVERIFIED`.
 
-## 9. IGAC and DIAN codes that differ
+## 9. Code tables
 
-The parser accepts both columns as input. The canonical output uses the IGAC column.
+Parsing is the same for every standard. The standards differ only in the codes they write, so each output style is a code table. The parser accepts every code in every column as input.
 
-| Meaning | IGAC (canonical) | DIAN |
+Each library keeps these tables in one module, so a correction is a one-line change. The fixtures check both libraries against the same expected strings, which catches any drift between them.
+
+### Street types
+
+| Meaning | `igac` | `dian` | `readable` |
+|---|---|---|---|
+| Calle | `CL` | `CL` | Calle |
+| Carrera | `KR` | `CR` | Carrera |
+| Avenida | `AV` | `AV` | Avenida |
+| Avenida Carrera | `AK` | `AK` | Avenida Carrera |
+| Avenida Calle | `AC` | `AC` | Avenida Calle |
+| Diagonal | `DG` | `DG` | Diagonal |
+| Transversal | `TV` | `TV` | Transversal |
+| Circular | `CIR` | `CIR` | Circular |
+| Circunvalar | `CCV` | `CRV` | Circunvalar |
+| Autopista | `AUTOP` | `AUT` | Autopista |
+| Vía | `VIA` | `VIA` † | Vía |
+| Kilómetro | `KM` | `KM` | Kilómetro |
+
+† DIAN's table has no code for *Vía*, so the `dian` style writes `VIA`.
+
+### Quadrants
+
+Written in full in every style: `SUR`, `ESTE`, `NORTE`, `OESTE` in `igac` and `dian`; `Sur`, `Este`, `Norte`, `Oeste` in `readable`.
+
+### Complements
+
+The 15 named complement types are in section 7. The OTRO codes:
+
+| Meaning | `igac` | `dian` |
 |---|---|---|
-| Carrera | `KR` | `CR` |
-| Circunvalar | `CCV` | `CRV` |
-| Autopista | `AUTOP` | `AUT` |
-| Apartamento | `APTO` | `AP` |
-| Piso | `PI` | `P` |
-| Barrio | `BR` | `BRR` |
-| Carretera | `CT` | `CRT` |
-| Vereda | `VDA` | `VRD` |
-| Agrupación | `AGN` | `AGP` |
+| Penthouse | `PH` | `PH` |
+| Garaje | `GJ` | `GJ` |
+| Semisótano | `SS` | `SS` |
+| Consultorio | `CS` | `CS` |
+| Unidad | `UN` | `UN` |
+| Urbanización | `URB` | `URB` |
+| Sector | `SEC` | `SEC` |
+| Local mezzanine | `LM` | `LM` |
+| Mezzanine | `MN` | `MN` |
+| Terraza | `TZ` | `TZ` |
 | Centro comercial | `CECO` | `CC` |
 | Suite | `SU` | `SUITE` |
-| Pasaje | `PSJ` | `PJ` |
+| Agrupación | `AGN` | `AGP` |
+| Vereda | `VDA` | `VRD` |
 | Supermanzana | `SMZ` | `SM` |
+| Pasaje | `PSJ` | `PJ` |
 | Portería | `PT` | `POR` |
 
-## 10. Output formats
+In the `readable` style, OTRO complements use the meaning column: `Penthouse 2`.
 
-### Canonical (`style: "dane"`, the default)
+## 10. Output styles
 
-Uppercase, IGAC codes, no `#`, no hyphens, no padding, single spaces, quadrants in full:
+`options.style` picks the code table for `canonical` and `normalize()`. The default is `igac`.
+
+### `igac` (default) and `dian`
+
+Uppercase, the style's codes, no `#`, no hyphens, no padding, single spaces, quadrants in full:
 
 ```
 street-type  number[letter][ suffix]  [quadrant]  cross[letter][ suffix]  plate  [quadrant]  [complement-code value]...
 ```
 
-| Input | Canonical |
-|---|---|
-| `Carrera 45 # 12-30 Local 3` | `KR 45 12 30 LC 3` |
-| `Calle 78 Sur # 20D – 15` | `CL 78 SUR 20D 15` |
-| `Avenida Carrera 73B Sur # 4 – 10 Torre 2` | `AK 73B SUR 4 10 TO 2` |
-| `Calle 38 A Bis Sur # 3A-18 Este` | `CL 38A BIS SUR 3A 18 ESTE` |
-| `Cra 7 # 45 - 12 Torre 2 Apto 501` | `KR 7 45 12 TO 2 APTO 501` |
+| Input | `igac` | `dian` |
+|---|---|---|
+| `Carrera 45 # 12-30 Local 3` | `KR 45 12 30 LC 3` | `CR 45 12 30 LC 3` |
+| `Calle 78 Sur # 20D – 15` | `CL 78 SUR 20D 15` | `CL 78 SUR 20D 15` |
+| `Avenida Carrera 73B Sur # 4 – 10 Torre 2` | `AK 73B SUR 4 10 TO 2` | `AK 73B SUR 4 10 TO 2` |
+| `Calle 38 A Bis Sur # 3A-18 Este` | `CL 38A BIS SUR 3A 18 ESTE` | `CL 38A BIS SUR 3A 18 ESTE` |
+| `Cra 7 # 45 - 12 Torre 2 Apto 501` | `KR 7 45 12 TO 2 APTO 501` | `CR 7 45 12 TO 2 AP 501` |
 
-Locality and department are **not** part of the canonical string.
+Locality and department are **not** part of either string.
 
-### Readable (`style: "readable"`)
+### `readable`
 
 Full street-type names, with `#` and a hyphen before the plate, `Bis` and quadrants in title case, and complements after commas as full words:
 
@@ -195,7 +240,7 @@ Carrera 7 # 45-12, Torre 2, Apartamento 501
 ### Fields
 
 - `canonical` follows `options.style`.
-- `normalized` is always the readable form, whatever the style option.
+- `normalized` is always the `readable` form, whatever the style option.
 
 ## 11. Warnings and confidence
 
@@ -253,8 +298,8 @@ These notes describe nomenclature habits per city. They are working knowledge, n
 
 1. Named streets: is `NAMED_STREET` with a null number the right model, or should the lite library capture the name in a field? (section 3)
 2. Should `UNCOMMON_QUADRANT` be dropped, given that Cali uses `NORTE`/`OESTE` routinely? (section 5)
-3. Should common OTRO codes (`PH`, `GJ`, `SS`, `CS`) become their own `ComplementType` values? (section 7)
+3. Should common OTRO codes (`PH`, `GJ`, `SS`, `CS`) get their own `ComplementType` values? (section 7)
 4. Can plates legitimately exceed 3 digits in any city? (section 6)
-5. Is there an official DANE or ICONTEC address standard that supersedes the IGAC table? If one appears, it wins and this file changes. (section 1)
+5. Is there an official DANE or ICONTEC address standard we missed? If one appears, it becomes another code table, and possibly the default. (section 1)
 6. The city notes in section 13 need real-address confirmation.
 7. Cali writes `AV 6N` for *Avenida 6 Norte*. Without knowing the city, the lite library reads `N` as a letter. Is that acceptable, or should an attached `N` after an `AV` number become a quadrant?

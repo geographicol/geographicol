@@ -85,7 +85,7 @@ interface ParsedAddress {
   plateNumber: number | null;        // the "-30" in "#12-30"
 
   // Complements, in order of appearance
-  complements: Array<{ type: ComplementType; value: string }>;
+  complements: Array<{ type: ComplementType; code: string; value: string }>;  // code: IGAC code, e.g. "APTO"
   // ComplementType: "APARTAMENTO" | "TORRE" | "LOCAL" | "OFICINA" | "PISO" |
   //   "INTERIOR" | "BLOQUE" | "MANZANA" | "CASA" | "ETAPA" | "CONJUNTO" |
   //   "EDIFICIO" | "BODEGA" | "LOTE" | "BARRIO" | "OTRO"
@@ -95,7 +95,7 @@ interface ParsedAddress {
   department: string | null;         // "Antioquia" — NOT validated in the lite lib
 
   // Output
-  canonical: string;                 // DANE-style canonical string, see below
+  canonical: string;                 // canonical string in options.style (igac by default), see below
   normalized: string;                // human-readable normalized form
   confidence: number;                // 0..1
   warnings: string[];                // machine-readable codes, e.g. "AMBIGUOUS_STREET_TYPE"
@@ -115,7 +115,7 @@ Convenience wrapper: `parse(input).canonical`.
 
 ```ts
 interface ParseOptions {
-  style?: "dane" | "readable";   // canonical string style, default "dane"
+  style?: "igac" | "dian" | "readable";   // canonical string style, default "igac"
   strict?: boolean;              // if true, unknown tokens lower confidence more aggressively
 }
 ```
@@ -178,14 +178,14 @@ Each complement is a keyword + value. Aliases:
 
 Multiple complements are common: `Torre 2 Apto 501`. Preserve order.
 
-### Canonical string (`style: "dane"`)
+### Canonical string (`style: "igac"`, default, and `style: "dian"`)
 
-IGAC-style (the style option keeps the name `dane`): uppercase, IGAC codes, numbers not padded, letters attached to their number, quadrants in full, tokens separated by single spaces, no `#`, no `-`. Locality is not included.
+There is no DANE address standard; the two official code tables are IGAC (cadastre) and DIAN (tax/RUT). One parser, one code table per style. Uppercase, the style's codes (`igac`: `KR`, `APTO`, `PI`; `dian`: `CR`, `AP`, `P`), numbers not padded, letters attached to their number, quadrants in full, tokens separated by single spaces, no `#`, no `-`. Locality is not included.
 
 ```
 Avenida Carrera 73B Sur # 4 – 10 Torre 2   →  AK 73B SUR 4 10 TO 2
 Calle 78 Sur # 20D – 15                     →  CL 78 SUR 20D 15
-Carrera 45 # 12-30 Local 3                  →  KR 45 12 30 LC 3
+Carrera 45 # 12-30 Local 3                  →  KR 45 12 30 LC 3        (dian: CR 45 12 30 LC 3)
 ```
 
 > Verified 2026-09-21: neither IGAC nor DIAN pads numbers. Complement codes follow IGAC (`APTO`, `PI`, `TO`, `LC`, ...). Keep codes in a single config table so they can be corrected in one place.
@@ -224,8 +224,9 @@ Start at 1.0. Subtract for each: unknown token (−0.15), ambiguous plate (−0.
     "streetNumber": 45,
     "crossNumber": 12,
     "plateNumber": 30,
-    "complements": [{ "type": "LOCAL", "value": "3" }],
-    "canonical": "KR 45 12 30 LC 3"
+    "complements": [{ "type": "LOCAL", "code": "LC", "value": "3" }],
+    "canonical": "KR 45 12 30 LC 3",
+    "canonicalDian": "CR 45 12 30 LC 3"
   },
   "minConfidence": 0.9
 }
