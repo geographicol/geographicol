@@ -1,12 +1,14 @@
 {
   "name": "@geographicol/address",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Normalize Colombian addresses into a canonical, structured form. Zero dependencies.",
   "author": "geographicol",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,7 +32,14 @@
     "url": "git+https://github.com/geographicol/geographicol.git",
     "directory": "packages/node"
   },
-  "keywords": ["colombia", "address", "normalization", "direccion", "dane", "geocoding"],
+  "keywords": [
+    "colombia",
+    "address",
+    "normalization",
+    "direccion",
+    "dane",
+    "geocoding"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
