@@ -68,7 +68,9 @@ Matching is case-insensitive, ignores accents and a trailing period, and is atte
 
 **Decision:** single-letter aliases `c` and `k` are accepted, and flagged `AMBIGUOUS_STREET_TYPE`, because a lone letter at the start of a string is not always a street type.
 
-**Open question:** named streets such as `Avenida Boyacá` or `Autopista Norte` are common in Bogotá. Their vía has a name instead of a number. **Default:** `streetType` is set, `streetNumber` is `null`, the name is not captured, and the warnings `NAMED_STREET` and `MISSING_STREET_NUMBER` apply (section 11).
+**Open question:** named streets such as `Avenida Boyacá` or `Autopista Norte` are common in Bogotá. Their vía has a name instead of a number. **Default:** the words between the street type and the first number are the name, even words that are otherwise quadrants (`Autopista Norte`). `streetType` is set, `streetNumber` is `null`, the name is not captured, and the warnings `NAMED_STREET` and `MISSING_STREET_NUMBER` apply (section 11).
+
+**Decision:** `KM` addresses are road locations, not grid addresses. The text after the kilometre number (`Km 5 Vía Cali Jamundí`) is the road description and is captured as `locality`.
 
 ## 4. Numbers, letters, BIS
 
@@ -103,11 +105,11 @@ Matching is case-insensitive, ignores accents and a trailing period, and is atte
 - **A bare `N` is a number marker** (`KR 45 N 12-30`), as DIAN lists it. It is never read as `NORTE`.
 - **Plate separators:** `-`, `–` (en dash), `—` (em dash), a space, or none.
 - **Plate numbers** are 1 to 3 digits.
-- **Glued cross and plate** such as `1230`: **Decision:** when a 3- or 4-digit block appears where cross + plate are expected, the last two digits are the plate (`1230` → cross `12`, plate `30`; `530` → cross `5`, plate `30`). Flag `AMBIGUOUS_PLATE`. A block of 5 or more digits is not split; it becomes an unknown token.
+- **Glued cross and plate** such as `1230`: **Decision:** when a 3- or 4-digit block appears where the cross number is expected and no plate number follows it, the last two digits are the plate (`1230` → cross `12`, plate `30`; `530` → cross `5`, plate `30`). Flag `AMBIGUOUS_PLATE`. A block of 5 or more digits is not split; it becomes an unknown token.
 
 ## 7. Complements
 
-A complement is a keyword followed by a value. The value runs until the next complement keyword, a comma, or the end of the address. It is uppercased and single-spaced. Multiple complements keep their order: `Torre 2 Apto 501` → `TO 2 APTO 501`.
+A complement is a keyword followed by a value. For most types the value is **one token**, and tokens that were attached in the input are rejoined (`Apto 501B` → `501B`). For **name-valued** types (BARRIO, CONJUNTO, EDIFICIO, and the OTRO codes `CECO`, `URB`, `SEC`, `AGN`, `VDA`), the value runs until the next complement keyword, a comma, or the end of the address (`Edificio San Fernando Oficina 801` → `SAN FERNANDO`, then `801`). Values are uppercased and single-spaced, and keep their accents. A keyword with no value is an `UNKNOWN_TOKEN`. Multiple complements keep their order: `Torre 2 Apto 501` → `TO 2 APTO 501`.
 
 Each complement is returned as `{ type, code, value }`:
 - `type` is the `ComplementType`.
@@ -141,7 +143,7 @@ Each complement is returned as `{ type, code, value }`:
 
 **Decision:** `cs` is not accepted as CASA, contrary to the brief. Both IGAC and DIAN define `CS` as *Consultorio*, so it maps to OTRO.
 
-**OTRO:** other recognized codes, listed in section 9, become `{ type: "OTRO", code: "<IGAC code>", value }`, for example `PH 2` → `{ type: "OTRO", code: "PH", value: "2" }`. **Open question:** whether a later version should give the common ones their own `ComplementType`.
+**OTRO:** other recognized codes, listed in section 9, are accepted as their code or their full name (`CS` or `Consultorio`, `CC` or `Centro Comercial`). They become `{ type: "OTRO", code: "<IGAC code>", value }`, for example `PH 2` → `{ type: "OTRO", code: "PH", value: "2" }`. **Open question:** whether a later version should give the common ones their own `ComplementType`.
 
 ## 8. Locality and department
 
@@ -244,7 +246,7 @@ Carrera 7 # 45-12, Torre 2, Apartamento 501
 
 ## 11. Warnings and confidence
 
-Confidence starts at 1.0. Each warning subtracts its penalty, and the result is clamped to [0, 1]. A penalty applies once per occurrence (two unknown tokens subtract 0.3), except where marked *once*.
+Confidence starts at 1.0. Each warning subtracts its penalty, and the result is clamped to [0, 1]. A penalty applies once per occurrence (two unknown tokens subtract 0.3), except where marked *once*. The `warnings` list holds each code once, in the order first raised.
 
 | Warning code | When | Penalty | Origin |
 |---|---|---|---|
@@ -254,7 +256,7 @@ Confidence starts at 1.0. Each warning subtracts its penalty, and the result is 
 | `UNKNOWN_TOKEN` | A token matches no rule | −0.15 | brief |
 | `RURAL_ADDRESS` | Street type `KM` | −0.1 | brief |
 | `MISSING_PLATE_NUMBER` | Cross number present, plate absent | −0.2 | added |
-| `MISSING_STREET_NUMBER` | Street type present, number absent | −0.4 | added |
+| `MISSING_STREET_NUMBER` | No street number | −0.4 | added |
 | `NAMED_STREET` | The vía principal is a name (section 3) | 0 | added |
 | `AMBIGUOUS_STREET_TYPE` | Single-letter alias `c` or `k` | −0.1 *once* | added |
 | `AMBIGUOUS_QUADRANT` | Single-letter quadrant `S` or `E` | −0.05 | added |
@@ -274,11 +276,11 @@ The procedure both implementations follow, in order. Keep it boring: a tokenizer
 2. **Normalize text for matching.** Lowercase; strip accents (`á` → `a`, keeping `ñ`); turn `º` and `°` into `o`. Keep the original text alongside so locality keeps its spelling.
 3. **Split off comma segments.** The first segment is the address. Later segments are complements if they start with a complement keyword, otherwise locality, then department (section 8).
 4. **Tokenize.** Split on spaces, `#`, hyphens and dashes. Split letter-digit boundaries so that `45A` → `45`, `A` (remembering it was attached) and `KR45` → `KR`, `45`. Remove trailing periods. Drop number markers (section 6).
-5. **Street type.** Match the longest alias at the start (section 3).
+5. **Street type.** Match the longest alias at the start (section 3). If none matches, raise `UNRECOGNIZED_STREET_TYPE` and continue from step 6 anyway: `45 # 12-30` still yields numbers.
 6. **Vía principal.** Number, then letter and `BIS` suffix, then quadrant.
 7. **Placa.** Cross number, then its suffix, then plate number, then quadrant. Apply the glued-block rule (section 6).
 8. **Complements.** Keyword, then value, repeated.
-9. **Leftovers.** A trailing run of words with no digits is the locality. Anything else is `UNKNOWN_TOKEN`.
+9. **Leftovers.** If a cross number was parsed, a trailing run of words with no digits is the locality. Anything else is `UNKNOWN_TOKEN`, one per token.
 10. **Score and render.** Apply section 11, then build `canonical` and `normalized` (section 10).
 
 `parse` never throws. Unparseable input returns `confidence: 0`, all fields `null` or empty, and the warnings that apply.
@@ -303,3 +305,4 @@ These notes describe nomenclature habits per city. They are working knowledge, n
 5. Is there an official DANE or ICONTEC address standard we missed? If one appears, it becomes another code table, and possibly the default. (section 1)
 6. The city notes in section 13 need real-address confirmation.
 7. Cali writes `AV 6N` for *Avenida 6 Norte*. Without knowing the city, the lite library reads `N` as a letter. Is that acceptable, or should an attached `N` after an `AV` number become a quadrant?
+8. `Calle 48 # 5-20 Sur` is common in Bogotá and means *Calle 48 Sur*, but by section 5 a quadrant after the plate belongs to the cross street, so it renders `CL 48 5 20 SUR` instead of `CL 48 SUR 5 20`. Should a trailing `SUR` after a `CL` move to the street?
