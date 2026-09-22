@@ -73,15 +73,15 @@ Returns a structured object. Never throws on unparseable input; returns `confide
 ```ts
 interface ParsedAddress {
   // Vía principal (the street the address is on)
-  streetType: StreetType | null;     // "CL" | "KR" | "AV" | "AK" | "AC" | "DG" | "TV" | "CQ" | ...
+  streetType: StreetType | null;     // "CL" | "KR" | "AV" | "AK" | "AC" | "DG" | "TV" | "CIR" | ...
   streetNumber: number | null;
-  streetLetter: string | null;       // "A", "B", "BIS", "BIS A", ...
-  streetQuadrant: "SUR" | "ESTE" | null;
+  streetLetter: string | null;       // "A", "B", "BIS", "BIS A", "B BIS", ...
+  streetQuadrant: "SUR" | "ESTE" | "NORTE" | "OESTE" | null;
 
   // Placa (cross street + distance)
   crossNumber: number | null;
   crossLetter: string | null;
-  crossQuadrant: "SUR" | "ESTE" | null;
+  crossQuadrant: "SUR" | "ESTE" | "NORTE" | "OESTE" | null;
   plateNumber: number | null;        // the "-30" in "#12-30"
 
   // Complements, in order of appearance
@@ -135,24 +135,24 @@ Full rules live in `docs/nomenclature.md` — write that file first, then implem
 | `AC` | avenida calle, av calle, av cl, ac |
 | `DG` | diagonal, diag, dg |
 | `TV` | transversal, transv, tv, tr, trans |
-| `CQ` | circular, circ, cq |
-| `CV` | circunvalar, cvlar |
-| `AUT` | autopista, auto, aut |
+| `CIR` | circular, circ, cir, cq |
+| `CCV` | circunvalar, cvlar, ccv, crv, cv |
+| `AUTOP` | autopista, autop, auto, aut |
 | `VIA` | vía, via |
 | `KM` | kilómetro, kilometro, km (rural — parse but flag `RURAL_ADDRESS`) |
 
-> Verify the canonical two-letter codes against DANE's official address standardization document before publishing. If DANE's codes differ from the table above, DANE wins — update this table and the fixtures.
+> Verified 2026-09-21: DANE publishes no address-abbreviation standard. Canonical codes follow the IGAC cadastral table, with DIAN codes accepted as input. See `docs/nomenclature.md` sections 1 and 9. This changed `CQ` → `CIR`, `CV` → `CCV`, `AUT` → `AUTOP`.
 
 ### Letters, BIS, quadrants
 
 - Letter suffix: single letter A–Z immediately after a number, optionally separated by a space: `45A`, `45 A`, `45-A` → `streetLetter: "A"`
 - `BIS` may appear alone or with a letter: `45 BIS`, `45 BIS A`, `45BIS`, `45 B BIS` — normalize to `"BIS"` or `"BIS A"`
-- Quadrants: `SUR`, `ESTE` (also `S`, `E` when unambiguous, and `OESTE`/`NORTE` in a few cities — accept and flag `UNCOMMON_QUADRANT`)
+- Quadrants: `SUR`, `ESTE` (also `S`, `E` when standing alone, flagged `AMBIGUOUS_QUADRANT`), and `NORTE`/`OESTE`, which Cali uses — accept and flag `UNCOMMON_QUADRANT`. Written in full in the canonical form.
 - Quadrant applies to the nearest preceding number
 
 ### The `#` and plate
 
-Accept all of: `#`, `No`, `No.`, `Nº`, `N°`, `numero`, `número`, `num`, or nothing (bare `KR 45 12 30`). Plate separator: `-`, `–`, space, or none (`12-30`, `12 30`, `1230` is **ambiguous** → attempt split, flag `AMBIGUOUS_PLATE`).
+Accept all of: `#`, `N`, `No`, `No.`, `Nº`, `N°`, `Nro`, `numero`, `número`, `num`, or nothing (bare `KR 45 12 30`). Plate separator: `-`, `–`, space, or none (`12-30`, `12 30`, `1230` is **ambiguous** → attempt split, flag `AMBIGUOUS_PLATE`).
 
 ### Complements
 
@@ -168,7 +168,7 @@ Each complement is a keyword + value. Aliases:
 | INTERIOR | interior, int, in |
 | BLOQUE | bloque, blq, bl |
 | MANZANA | manzana, mz, mza |
-| CASA | casa, cs, ca |
+| CASA | casa, ca (not `cs`, which IGAC and DIAN define as Consultorio) |
 | ETAPA | etapa, et |
 | CONJUNTO | conjunto, conj, cj |
 | EDIFICIO | edificio, ed, edif |
@@ -180,15 +180,15 @@ Multiple complements are common: `Torre 2 Apto 501`. Preserve order.
 
 ### Canonical string (`style: "dane"`)
 
-DANE-style: uppercase, abbreviated street type, zero-padded numbers, tokens separated by single spaces, no `#`, no `-`.
+IGAC-style (the style option keeps the name `dane`): uppercase, IGAC codes, numbers not padded, letters attached to their number, quadrants in full, tokens separated by single spaces, no `#`, no `-`. Locality is not included.
 
 ```
-Avenida Carrera 73B Sur # 4 – 10 Torre 2   →  AK 73 B S 4 10 TO 2
-Calle 78 Sur # 20D – 15                     →  CL 78 S 20 D 15
+Avenida Carrera 73B Sur # 4 – 10 Torre 2   →  AK 73B SUR 4 10 TO 2
+Calle 78 Sur # 20D – 15                     →  CL 78 SUR 20D 15
 Carrera 45 # 12-30 Local 3                  →  KR 45 12 30 LC 3
 ```
 
-> Exact DANE padding and complement codes must be verified against the official document. Implement the structure now; make padding and codes a single config table so they can be corrected in one place.
+> Verified 2026-09-21: neither IGAC nor DIAN pads numbers. Complement codes follow IGAC (`APTO`, `PI`, `TO`, `LC`, ...). Keep codes in a single config table so they can be corrected in one place.
 
 ### Canonical string (`style: "readable"`)
 
@@ -203,7 +203,7 @@ Anything after the last complement that is a comma-separated or trailing word se
 
 ### Confidence scoring
 
-Start at 1.0. Subtract for each: unknown token (−0.15), ambiguous plate (−0.2), missing cross number (−0.4), rural/KM address (−0.1), unrecognized street type (−0.5). Clamp to [0, 1]. Document the exact table in `docs/nomenclature.md`.
+Start at 1.0. Subtract for each: unknown token (−0.15), ambiguous plate (−0.2), missing cross number (−0.4), rural/KM address (−0.1), unrecognized street type (−0.5). Clamp to [0, 1]. The exact table, including penalties added since, is in `docs/nomenclature.md` section 11.
 
 ## Fixtures
 
