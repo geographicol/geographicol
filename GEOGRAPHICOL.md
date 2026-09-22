@@ -272,13 +272,15 @@ No author name anywhere. Author field in `package.json` / `pyproject.toml` is `g
 
 ## Definition of done for Milestone 1
 
-- [ ] `docs/nomenclature.md` written and reviewed (written; review and open questions pending)
+- [x] `docs/nomenclature.md` written and reviewed (reviewed 2026-09-22; 2 open questions remain, see its section 14)
 - [x] `fixtures/addresses.json` with ≥60 groups
 - [x] Node lib passes 100% of fixtures, published to npm
 - [x] Python lib passes 100% of fixtures, published to PyPI
 - [x] Both READMEs with before/after tables
 - [x] CI green on all matrix versions
 - [x] GitHub org `geographicol` public with the repo
+
+Milestone 1 complete: 0.1.0 published 2026-09-22. Changes since then (named streets, `catastral`/`igac` styles) are on `main`, awaiting release as 0.2.0.
 
 ## Milestone 2 (next brief): minimal paid API
 
