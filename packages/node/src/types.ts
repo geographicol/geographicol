@@ -34,7 +34,7 @@ export type ComplementType =
 
 export interface Complement {
   type: ComplementType;
-  /** IGAC code, whatever the output style: "APTO", "TO", "PH", ... */
+  /** Catastral code, whatever the output style: "APTO", "TO", "PH", ... */
   code: string;
   value: string;
 }
@@ -43,6 +43,8 @@ export interface ParsedAddress {
   // Vía principal
   streetType: StreetType | null;
   streetNumber: number | null;
+  /** The name of a named street ("BOYACÁ"), when there is no number. */
+  streetName: string | null;
   streetLetter: string | null;
   streetQuadrant: Quadrant | null;
 
@@ -64,10 +66,10 @@ export interface ParsedAddress {
   raw: string;
 }
 
-export type Style = "igac" | "dian" | "readable";
+export type Style = "catastral" | "igac" | "dian" | "readable";
 
 export interface ParseOptions {
-  /** Canonical string style. Default "igac". */
+  /** Canonical string style. Default "catastral". */
   style?: Style;
   /** Double every confidence penalty. */
   strict?: boolean;

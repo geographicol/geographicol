@@ -15,7 +15,7 @@ const fixturesPath = fileURLToPath(new URL("../../../fixtures/addresses.json", i
 const fixtures: FixtureGroup[] = JSON.parse(readFileSync(fixturesPath, "utf8"));
 
 const TOLERANCE = 1e-9;
-const STRING_KEYS = ["canonical", "canonicalDian", "normalized", "warnings"];
+const STRING_KEYS = ["canonical", "canonicalIgac", "canonicalDian", "normalized", "warnings"];
 
 describe("fixtures file", () => {
   it("has at least 60 groups with unique ids", () => {
@@ -34,6 +34,9 @@ describe.each(fixtures)("$id", (group) => {
       expect(result[key as keyof typeof result], key).toEqual(value);
     }
     if ("canonical" in expected) expect(result.canonical).toBe(expected.canonical);
+    if ("canonicalIgac" in expected) {
+      expect(parse(input, { style: "igac" }).canonical).toBe(expected.canonicalIgac);
+    }
     if ("canonicalDian" in expected) {
       expect(parse(input, { style: "dian" }).canonical).toBe(expected.canonicalDian);
     }

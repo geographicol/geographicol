@@ -14,6 +14,7 @@
     "streetNumber": 45,
     "complements": [{ "type": "LOCAL", "code": "LC", "value": "3" }],
     "canonical": "KR 45 12 30 LC 3",
+    "canonicalIgac": "Carrera 45 12 30 L 3",
     "canonicalDian": "CR 45 12 30 LC 3",
     "normalized": "Carrera 45 # 12-30, Local 3",
     "warnings": []
@@ -27,7 +28,8 @@
 - `inputs`: every spelling that must produce the same result.
 - `expected`: only the keys present are asserted.
   - `ParsedAddress` fields are compared exactly. `null` means the field must be `null`.
-  - `canonical` is the default `igac` style.
+  - `canonical` is the default `catastral` style.
+  - `canonicalIgac` is the `igac` style (IGAC's 2024 manual), tested with `{ style: "igac" }`.
   - `canonicalDian` is the `dian` style, tested with `{ style: "dian" }`.
   - `normalized` is the `readable` string.
   - `warnings` is compared as a set: same codes, order ignored.

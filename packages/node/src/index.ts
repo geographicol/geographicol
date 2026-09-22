@@ -17,8 +17,9 @@ export function normalize(input: string, options: ParseOptions = {}): string {
   return parse(input, options).canonical;
 }
 
-/** True when confidence is at least 0.7 and both the street and cross numbers are present. */
+/** True when confidence is at least 0.7, a cross number is present, and a street number or name. */
 export function isValid(input: string): boolean {
   const result = parse(input);
-  return result.confidence >= 0.7 && result.streetNumber !== null && result.crossNumber !== null;
+  const hasStreet = result.streetNumber !== null || result.streetName !== null;
+  return result.confidence >= 0.7 && hasStreet && result.crossNumber !== null;
 }

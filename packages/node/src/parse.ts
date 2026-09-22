@@ -1,6 +1,9 @@
 // The parsing procedure from docs/nomenclature.md section 12, step by step.
 
 import {
+  AMBIGUOUS_COMPLEMENT_ALIASES,
+  CALLE_LIKE,
+  CARRERA_LIKE,
   COMPLEMENTS,
   type ComplementCode,
   NUMBER_MARKERS,
@@ -32,6 +35,7 @@ function emptyFields(): Fields {
   return {
     streetType: null,
     streetNumber: null,
+    streetName: null,
     streetLetter: null,
     streetQuadrant: null,
     crossNumber: null,
@@ -81,7 +85,7 @@ class AddressParser {
     if (f.streetType === null) this.warn("UNRECOGNIZED_STREET_TYPE");
 
     if (f.streetType !== null && this.isNamedStreet()) {
-      this.skipStreetName();
+      f.streetName = this.readStreetName();
       this.warn("NAMED_STREET");
     } else {
       f.streetNumber = this.parseNumber(3);
@@ -90,7 +94,7 @@ class AddressParser {
         f.streetQuadrant = this.parseQuadrant();
       }
     }
-    if (f.streetNumber === null) this.warn("MISSING_STREET_NUMBER");
+    if (f.streetNumber === null && f.streetName === null) this.warn("MISSING_STREET_NUMBER");
 
     if (f.streetType === "KM") {
       this.warn("RURAL_ADDRESS");
@@ -154,8 +158,14 @@ class AddressParser {
     return next !== undefined && !next.isNum && !this.isNumberMarker(next);
   }
 
-  private skipStreetName(): void {
-    while (this.peek() && !this.peek()?.isNum && !this.isNumberMarker(this.peek())) this.i++;
+  /** Words up to the first number or number marker: "BOYACÁ", "DE LA FACTORÍA". */
+  private readStreetName(): string {
+    const words: string[] = [];
+    while (this.peek() && !this.peek()?.isNum && !this.isNumberMarker(this.peek())) {
+      words.push(this.peek()?.orig ?? "");
+      this.i++;
+    }
+    return words.join(" ").toUpperCase();
   }
 
   private parseNumber(maxDigits: number): number | null {
@@ -174,8 +184,10 @@ class AddressParser {
       if (token.norm === "bis") {
         parts.push("BIS");
       } else if (token.norm.length === 1 && /[a-z]/.test(token.norm)) {
-        // Standing alone, S and E are quadrants and N means "número".
-        if (!token.attached && (token.norm in SINGLE_LETTER_QUADRANTS || token.norm === "n")) break;
+        // N is never a letter: attached it is NORTE, alone it means "número".
+        // Standing alone, S and E are quadrants.
+        if (token.norm === "n") break;
+        if (!token.attached && token.norm in SINGLE_LETTER_QUADRANTS) break;
         parts.push(token.norm.toUpperCase());
       } else {
         break;
@@ -193,6 +205,11 @@ class AddressParser {
     if (!quadrant && !token.attached) {
       quadrant = SINGLE_LETTER_QUADRANTS[token.norm];
       if (quadrant) this.warn("AMBIGUOUS_QUADRANT");
+    }
+    if (!quadrant && token.attached && token.norm === "n") {
+      // Cali's "6N": an attached N is NORTE.
+      quadrant = "NORTE";
+      this.warn("AMBIGUOUS_QUADRANT");
     }
     if (!quadrant) return null;
     if (UNCOMMON_QUADRANTS.includes(quadrant)) this.warn("UNCOMMON_QUADRANT");
@@ -231,18 +248,33 @@ class AddressParser {
         f.plateNumber = Number(plate.norm);
       }
     }
-    if (f.crossQuadrant === null) f.crossQuadrant = this.parseQuadrant();
+    if (f.crossQuadrant === null) this.parseTrailingQuadrant();
   }
 
-  private matchComplement(): { code: ComplementCode; length: number } | null {
+  /** A quadrant after the plate follows the kind of street it describes (section 5). */
+  private parseTrailingQuadrant(): void {
+    const f = this.fields;
+    const quadrant = this.parseQuadrant();
+    if (quadrant === null) return;
+    const street = f.streetType;
+    const belongsToStreet =
+      f.streetQuadrant === null &&
+      street !== null &&
+      ((quadrant === "SUR" && CALLE_LIKE.includes(street)) ||
+        (quadrant === "ESTE" && CARRERA_LIKE.includes(street)));
+    if (belongsToStreet) f.streetQuadrant = quadrant;
+    else f.crossQuadrant = quadrant;
+  }
+
+  private matchComplement(): { code: ComplementCode; length: number; alias: string } | null {
     for (const matcher of COMPLEMENT_MATCHERS) {
       if (!this.matchesWords(matcher.words)) continue;
       const alias = matcher.words.join(" ");
       const next = this.peek(matcher.words.length);
-      // "tr" is Torre only once the placa is parsed; "p" is Piso only before a number.
+      // "tr" is Torre only once the placa is parsed; "p" and "l" only before a number.
       if (alias === "tr" && this.fields.crossNumber === null) continue;
-      if (alias === "p" && !next?.isNum) continue;
-      return { code: matcher.code, length: matcher.words.length };
+      if ((alias === "p" || alias === "l") && !next?.isNum) continue;
+      return { code: matcher.code, length: matcher.words.length, alias };
     }
     return null;
   }
@@ -253,12 +285,13 @@ class AddressParser {
       const match = this.matchComplement();
       if (match) {
         this.i += match.length;
+        if (AMBIGUOUS_COMPLEMENT_ALIASES.includes(match.alias)) this.warn("AMBIGUOUS_COMPLEMENT");
         const value = match.code.nameValued ? this.readNameValue() : this.readTokenValue();
         if (value === null) {
           this.warn("UNKNOWN_TOKEN");
           continue;
         }
-        const complement: Complement = { type: match.code.type, code: match.code.igac, value };
+        const complement: Complement = { type: match.code.type, code: match.code.catastral, value };
         this.fields.complements.push(complement);
         continue;
       }
@@ -335,7 +368,7 @@ export function parse(input: string, options: ParseOptions = {}): ParsedAddress 
   const fields = parser.fields;
   return {
     ...fields,
-    canonical: render(fields, options.style ?? "igac"),
+    canonical: render(fields, options.style ?? "catastral"),
     normalized: render(fields, "readable"),
     confidence: score(parser.raised, options.strict ?? false),
     warnings: [...new Set(parser.raised)],

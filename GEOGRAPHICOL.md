@@ -75,6 +75,7 @@ interface ParsedAddress {
   // Vía principal (the street the address is on)
   streetType: StreetType | null;     // "CL" | "KR" | "AV" | "AK" | "AC" | "DG" | "TV" | "CIR" | ...
   streetNumber: number | null;
+  streetName: string | null;         // named streets: "BOYACÁ" (streetNumber is then null)
   streetLetter: string | null;       // "A", "B", "BIS", "BIS A", "B BIS", ...
   streetQuadrant: "SUR" | "ESTE" | "NORTE" | "OESTE" | null;
 
@@ -95,7 +96,7 @@ interface ParsedAddress {
   department: string | null;         // "Antioquia" — NOT validated in the lite lib
 
   // Output
-  canonical: string;                 // canonical string in options.style (igac by default), see below
+  canonical: string;                 // canonical string in options.style (catastral by default), see below
   normalized: string;                // human-readable normalized form
   confidence: number;                // 0..1
   warnings: string[];                // machine-readable codes, e.g. "AMBIGUOUS_STREET_TYPE"
@@ -109,20 +110,20 @@ Convenience wrapper: `parse(input).canonical`.
 
 ### `isValid(input: string) → boolean`
 
-`true` when `parse(input).confidence >= 0.7` and both `streetNumber` and `crossNumber` are present.
+`true` when `parse(input).confidence >= 0.7`, `crossNumber` is present, and either `streetNumber` or `streetName` is present.
 
 ### Options
 
 ```ts
 interface ParseOptions {
-  style?: "igac" | "dian" | "readable";   // canonical string style, default "igac"
+  style?: "catastral" | "igac" | "dian" | "readable";   // canonical string style, default "catastral"
   strict?: boolean;              // if true, unknown tokens lower confidence more aggressively
 }
 ```
 
 ### Python naming
 
-Same behavior, Python conventions: `parse(input, style="igac", strict=False)`, `normalize(...)`, `is_valid(input)`. `ParsedAddress` and `Complement` are dataclasses with snake_case fields (`street_type`, `cross_number`, ...). The fixtures use the camelCase names, and the Python tests map them.
+Same behavior, Python conventions: `parse(input, style="catastral", strict=False)`, `normalize(...)`, `is_valid(input)`. `ParsedAddress` and `Complement` are dataclasses with snake_case fields (`street_type`, `cross_number`, ...). The fixtures use the camelCase names, and the Python tests map them.
 
 ## Normalization rules
 
@@ -145,7 +146,7 @@ Full rules live in `docs/nomenclature.md` — write that file first, then implem
 | `VIA` | vía, via |
 | `KM` | kilómetro, kilometro, km (rural — parse but flag `RURAL_ADDRESS`) |
 
-> Verified 2026-09-21: DANE publishes no address-abbreviation standard. Canonical codes follow the IGAC cadastral table, with DIAN codes accepted as input. See `docs/nomenclature.md` sections 1 and 9. This changed `CQ` → `CIR`, `CV` → `CCV`, `AUT` → `AUTOP`.
+> Verified 2026-09-21: DANE publishes no address-abbreviation standard. Default canonical codes follow the older cadastral table (`catastral` style); IGAC's 2024 manual (`igac`) and DIAN (`dian`) are separate styles, and every table's codes are accepted as input. See `docs/nomenclature.md` sections 1 and 9. This changed `CQ` → `CIR`, `CV` → `CCV`, `AUT` → `AUTOP`.
 
 ### Letters, BIS, quadrants
 
@@ -182,9 +183,9 @@ Each complement is a keyword + value. Aliases:
 
 Multiple complements are common: `Torre 2 Apto 501`. Preserve order.
 
-### Canonical string (`style: "igac"`, default, and `style: "dian"`)
+### Canonical string (`style: "catastral"` default, `"igac"`, `"dian"`)
 
-There is no DANE address standard; the two official code tables are IGAC (cadastre) and DIAN (tax/RUT). One parser, one code table per style. Uppercase, the style's codes (`igac`: `KR`, `APTO`, `PI`; `dian`: `CR`, `AP`, `P`), numbers not padded, letters attached to their number, quadrants in full, tokens separated by single spaces, no `#`, no `-`. Locality is not included.
+There is no DANE address standard. Three official conventions exist: the older cadastral table (`catastral`), IGAC's 2024 manual (`igac`, full-word street types) and DIAN (`dian`). One parser, one code table per style; see `docs/nomenclature.md` sections 1, 9 and 10. Uppercase, the style's codes (`catastral`: `KR`, `APTO`, `PI`; `dian`: `CR`, `AP`, `P`), numbers not padded, letters attached to their number, quadrants in full, tokens separated by single spaces, no `#`, no `-`. Locality is not included.
 
 ```
 Avenida Carrera 73B Sur # 4 – 10 Torre 2   →  AK 73B SUR 4 10 TO 2
@@ -192,7 +193,7 @@ Calle 78 Sur # 20D – 15                     →  CL 78 SUR 20D 15
 Carrera 45 # 12-30 Local 3                  →  KR 45 12 30 LC 3        (dian: CR 45 12 30 LC 3)
 ```
 
-> Verified 2026-09-21: neither IGAC nor DIAN pads numbers. Complement codes follow IGAC (`APTO`, `PI`, `TO`, `LC`, ...). Keep codes in a single config table so they can be corrected in one place.
+> Verified 2026-09-21: no source pads street or cross numbers. Default complement codes follow the cadastral table (`APTO`, `PI`, `TO`, `LC`, ...). Keep codes in a single config table so they can be corrected in one place.
 
 ### Canonical string (`style: "readable"`)
 

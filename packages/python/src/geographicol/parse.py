@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from .codes import (
+    AMBIGUOUS_COMPLEMENT_ALIASES,
+    CALLE_LIKE,
+    CARRERA_LIKE,
     COMPLEMENTS,
     NUMBER_MARKERS,
     ONCE_ONLY,
@@ -69,14 +72,14 @@ class _AddressParser:
             self._warn("UNRECOGNIZED_STREET_TYPE")
 
         if a.street_type is not None and self._is_named_street():
-            self._skip_street_name()
+            a.street_name = self._read_street_name()
             self._warn("NAMED_STREET")
         else:
             a.street_number = self._parse_number(3)
             if a.street_number is not None:
                 a.street_letter = self._parse_suffix()
                 a.street_quadrant = self._parse_quadrant()
-        if a.street_number is None:
+        if a.street_number is None and a.street_name is None:
             self._warn("MISSING_STREET_NUMBER")
 
         if a.street_type == "KM":
@@ -140,9 +143,13 @@ class _AddressParser:
         token = self._peek()
         return token is not None and not token.is_num and not self._is_number_marker(token)
 
-    def _skip_street_name(self) -> None:
+    def _read_street_name(self) -> str:
+        """Words up to the first number or number marker: "BOYACÁ", "DE LA FACTORÍA"."""
+        words: list[str] = []
         while (token := self._peek()) and not token.is_num and not self._is_number_marker(token):
+            words.append(token.orig)
             self.i += 1
+        return " ".join(words).upper()
 
     def _parse_number(self, max_digits: int) -> int | None:
         token = self._peek()
@@ -158,10 +165,11 @@ class _AddressParser:
             if token.norm == "bis":
                 parts.append("BIS")
             elif len(token.norm) == 1 and "a" <= token.norm <= "z":
-                # Standing alone, S and E are quadrants and N means "número".
-                if not token.attached and (
-                    token.norm in SINGLE_LETTER_QUADRANTS or token.norm == "n"
-                ):
+                # N is never a letter: attached it is NORTE, alone it means "número".
+                # Standing alone, S and E are quadrants.
+                if token.norm == "n":
+                    break
+                if not token.attached and token.norm in SINGLE_LETTER_QUADRANTS:
                     break
                 parts.append(token.norm.upper())
             else:
@@ -179,6 +187,10 @@ class _AddressParser:
             quadrant = SINGLE_LETTER_QUADRANTS.get(token.norm)
             if quadrant:
                 self._warn("AMBIGUOUS_QUADRANT")
+        if quadrant is None and token.attached and token.norm == "n":
+            # Cali's "6N": an attached N is NORTE.
+            quadrant = "NORTE"
+            self._warn("AMBIGUOUS_QUADRANT")
         if quadrant is None:
             return None
         if quadrant in UNCOMMON_QUADRANTS:
@@ -219,20 +231,40 @@ class _AddressParser:
                 self.i += 1
                 a.plate_number = int(plate.norm)
         if a.cross_quadrant is None:
-            a.cross_quadrant = self._parse_quadrant()
+            self._parse_trailing_quadrant()
 
-    def _match_complement(self) -> tuple[ComplementCode, int] | None:
+    def _parse_trailing_quadrant(self) -> None:
+        """A quadrant after the plate follows the kind of street it describes (section 5)."""
+        a = self.a
+        quadrant = self._parse_quadrant()
+        if quadrant is None:
+            return
+        street = a.street_type
+        belongs_to_street = (
+            a.street_quadrant is None
+            and street is not None
+            and (
+                (quadrant == "SUR" and street in CALLE_LIKE)
+                or (quadrant == "ESTE" and street in CARRERA_LIKE)
+            )
+        )
+        if belongs_to_street:
+            a.street_quadrant = quadrant
+        else:
+            a.cross_quadrant = quadrant
+
+    def _match_complement(self) -> tuple[ComplementCode, int, str] | None:
         for code, words in _COMPLEMENT_MATCHERS:
             if not self._matches_words(words):
                 continue
             alias = " ".join(words)
             following = self._peek(len(words))
-            # "tr" is Torre only once the placa is parsed; "p" is Piso only before a number.
+            # "tr" is Torre only once the placa is parsed; "p" and "l" only before a number.
             if alias == "tr" and self.a.cross_number is None:
                 continue
-            if alias == "p" and (following is None or not following.is_num):
+            if alias in ("p", "l") and (following is None or not following.is_num):
                 continue
-            return code, len(words)
+            return code, len(words), alias
         return None
 
     # Steps 8-9.
@@ -240,13 +272,17 @@ class _AddressParser:
         while self._peek():
             match = self._match_complement()
             if match:
-                code, length = match
+                code, length, alias = match
                 self.i += length
+                if alias in AMBIGUOUS_COMPLEMENT_ALIASES:
+                    self._warn("AMBIGUOUS_COMPLEMENT")
                 value = self._read_name_value() if code.name_valued else self._read_token_value()
                 if value is None:
                     self._warn("UNKNOWN_TOKEN")
                     continue
-                self.a.complements.append(Complement(type=code.type, code=code.igac, value=value))
+                self.a.complements.append(
+                    Complement(type=code.type, code=code.catastral, value=value)
+                )
                 continue
 
             rest = self.tokens[self.i :]
@@ -297,7 +333,7 @@ def _score(raised: list[str], strict: bool) -> float:
     return min(1.0, max(0.0, 1 - penalty))
 
 
-def parse(input: str, style: Style = "igac", strict: bool = False) -> ParsedAddress:
+def parse(input: str, style: Style = "catastral", strict: bool = False) -> ParsedAddress:
     """Parses a Colombian address.
 
     Never raises: unparseable input gets confidence 0 and warnings instead.

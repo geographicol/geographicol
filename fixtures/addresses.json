@@ -12,6 +12,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -28,6 +29,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30 LC 3",
+      "canonicalIgac": "Carrera 45 12 30 L 3",
       "canonicalDian": "CR 45 12 30 LC 3",
       "normalized": "Carrera 45 # 12-30, Local 3",
       "warnings": []
@@ -48,6 +50,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 26,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 13,
@@ -58,6 +61,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 26 13 19",
+      "canonicalIgac": "Calle 26 13 19",
       "canonicalDian": "CL 26 13 19",
       "normalized": "Calle 26 # 13-19",
       "warnings": []
@@ -76,6 +80,7 @@
     "expected": {
       "streetType": "AV",
       "streetNumber": 30,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 45,
@@ -86,6 +91,7 @@
       "locality": null,
       "department": null,
       "canonical": "AV 30 45 12",
+      "canonicalIgac": "Avenida 30 45 12",
       "canonicalDian": "AV 30 45 12",
       "normalized": "Avenida 30 # 45-12",
       "warnings": []
@@ -106,6 +112,7 @@
     "expected": {
       "streetType": "AK",
       "streetNumber": 68,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 22,
@@ -116,6 +123,7 @@
       "locality": null,
       "department": null,
       "canonical": "AK 68 22 47",
+      "canonicalIgac": "Avenida Carrera 68 22 47",
       "canonicalDian": "AK 68 22 47",
       "normalized": "Avenida Carrera 68 # 22-47",
       "warnings": []
@@ -135,6 +143,7 @@
     "expected": {
       "streetType": "AC",
       "streetNumber": 26,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 69,
@@ -145,6 +154,7 @@
       "locality": null,
       "department": null,
       "canonical": "AC 26 69 76",
+      "canonicalIgac": "Avenida Calle 26 69 76",
       "canonicalDian": "AC 26 69 76",
       "normalized": "Avenida Calle 26 # 69-76",
       "warnings": []
@@ -163,6 +173,7 @@
     "expected": {
       "streetType": "DG",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 16,
@@ -173,6 +184,7 @@
       "locality": null,
       "department": null,
       "canonical": "DG 45 16 20",
+      "canonicalIgac": "Diagonal 45 16 20",
       "canonicalDian": "DG 45 16 20",
       "normalized": "Diagonal 45 # 16-20",
       "warnings": []
@@ -193,6 +205,7 @@
     "expected": {
       "streetType": "TV",
       "streetNumber": 39,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 74,
@@ -203,6 +216,7 @@
       "locality": null,
       "department": null,
       "canonical": "TV 39 74 40",
+      "canonicalIgac": "Transversal 39 74 40",
       "canonicalDian": "TV 39 74 40",
       "normalized": "Transversal 39 # 74-40",
       "warnings": []
@@ -222,6 +236,7 @@
     "expected": {
       "streetType": "CIR",
       "streetNumber": 1,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 70,
@@ -232,6 +247,7 @@
       "locality": null,
       "department": null,
       "canonical": "CIR 1 70 10",
+      "canonicalIgac": "Circular 1 70 10",
       "canonicalDian": "CIR 1 70 10",
       "normalized": "Circular 1 # 70-10",
       "warnings": []
@@ -252,6 +268,7 @@
     "expected": {
       "streetType": "CCV",
       "streetNumber": 32,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 14,
@@ -262,6 +279,7 @@
       "locality": null,
       "department": null,
       "canonical": "CCV 32 14 20",
+      "canonicalIgac": "Circunvalar 32 14 20",
       "canonicalDian": "CRV 32 14 20",
       "normalized": "Circunvalar 32 # 14-20",
       "warnings": []
@@ -280,6 +298,7 @@
     "expected": {
       "streetType": "AUTOP",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 108,
@@ -290,6 +309,7 @@
       "locality": null,
       "department": null,
       "canonical": "AUTOP 45 108 27",
+      "canonicalIgac": "Autopista 45 108 27",
       "canonicalDian": "AUT 45 108 27",
       "normalized": "Autopista 45 # 108-27",
       "warnings": []
@@ -308,6 +328,7 @@
     "expected": {
       "streetType": "VIA",
       "streetNumber": 40,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 73,
@@ -318,6 +339,7 @@
       "locality": null,
       "department": null,
       "canonical": "VIA 40 73 290",
+      "canonicalIgac": "Vía 40 73 290",
       "canonicalDian": "VIA 40 73 290",
       "normalized": "Vía 40 # 73-290",
       "warnings": []
@@ -336,6 +358,7 @@
     "expected": {
       "streetType": "KM",
       "streetNumber": 5,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": null,
@@ -346,6 +369,7 @@
       "locality": "Vía Cali Jamundí",
       "department": null,
       "canonical": "KM 5",
+      "canonicalIgac": "KM 5",
       "canonicalDian": "KM 5",
       "normalized": "Kilómetro 5",
       "warnings": [
@@ -368,6 +392,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": "A",
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -378,6 +403,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45A 12 30",
+      "canonicalIgac": "Calle 45A 12 30",
       "canonicalDian": "CL 45A 12 30",
       "normalized": "Calle 45A # 12-30",
       "warnings": []
@@ -395,6 +421,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 43,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 20,
@@ -405,6 +432,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 43 20D 15",
+      "canonicalIgac": "Carrera 43 20D 15",
       "canonicalDian": "CR 43 20D 15",
       "normalized": "Carrera 43 # 20D-15",
       "warnings": []
@@ -423,6 +451,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 10,
+      "streetName": null,
       "streetLetter": "B",
       "streetQuadrant": null,
       "crossNumber": 43,
@@ -433,6 +462,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 10B 43D 45",
+      "canonicalIgac": "Calle 10B 43D 45",
       "canonicalDian": "CL 10B 43D 45",
       "normalized": "Calle 10B # 43D-45",
       "warnings": []
@@ -450,6 +480,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": "BIS",
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -460,6 +491,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45 BIS 12 30",
+      "canonicalIgac": "Calle 45 BIS 12 30",
       "canonicalDian": "CL 45 BIS 12 30",
       "normalized": "Calle 45 Bis # 12-30",
       "warnings": []
@@ -477,6 +509,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": "BIS A",
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -487,6 +520,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45 BIS A 12 30",
+      "canonicalIgac": "Calle 45 BIS A 12 30",
       "canonicalDian": "CL 45 BIS A 12 30",
       "normalized": "Calle 45 Bis A # 12-30",
       "warnings": []
@@ -504,6 +538,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 7,
+      "streetName": null,
       "streetLetter": "B BIS",
       "streetQuadrant": null,
       "crossNumber": 45,
@@ -514,6 +549,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 7B BIS 45 12",
+      "canonicalIgac": "Carrera 7B BIS 45 12",
       "canonicalDian": "CR 7B BIS 45 12",
       "normalized": "Carrera 7B Bis # 45-12",
       "warnings": []
@@ -530,6 +566,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 12,
+      "streetName": null,
       "streetLetter": "A BIS B",
       "streetQuadrant": null,
       "crossNumber": 5,
@@ -540,6 +577,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 12A BIS B 5 10",
+      "canonicalIgac": "Calle 12A BIS B 5 10",
       "canonicalDian": "CL 12A BIS B 5 10",
       "normalized": "Calle 12A Bis B # 5-10",
       "warnings": []
@@ -557,6 +595,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 63,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 24,
@@ -567,6 +606,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 63 24 BIS 15",
+      "canonicalIgac": "Calle 63 24 BIS 15",
       "canonicalDian": "CL 63 24 BIS 15",
       "normalized": "Calle 63 # 24 Bis-15",
       "warnings": []
@@ -585,6 +625,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 38,
+      "streetName": null,
       "streetLetter": "A BIS",
       "streetQuadrant": "SUR",
       "crossNumber": 3,
@@ -595,6 +636,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 38A BIS SUR 3A 18 ESTE",
+      "canonicalIgac": "Calle 38A BIS Sur 3A 18 Este",
       "canonicalDian": "CL 38A BIS SUR 3A 18 ESTE",
       "normalized": "Calle 38A Bis Sur # 3A-18 Este",
       "warnings": []
@@ -612,6 +654,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 78,
+      "streetName": null,
       "streetLetter": "S",
       "streetQuadrant": null,
       "crossNumber": 20,
@@ -622,6 +665,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 78S 20 15",
+      "canonicalIgac": "Calle 78S 20 15",
       "canonicalDian": "CL 78S 20 15",
       "normalized": "Calle 78S # 20-15",
       "warnings": []
@@ -641,6 +685,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 78,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "SUR",
       "crossNumber": 20,
@@ -651,6 +696,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 78 SUR 20D 15",
+      "canonicalIgac": "Calle 78 Sur 20D 15",
       "canonicalDian": "CL 78 SUR 20D 15",
       "normalized": "Calle 78 Sur # 20D-15",
       "warnings": []
@@ -669,6 +715,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 1,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "ESTE",
       "crossNumber": 18,
@@ -679,6 +726,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 1 ESTE 18 30",
+      "canonicalIgac": "Carrera 1 Este 18 30",
       "canonicalDian": "CR 1 ESTE 18 30",
       "normalized": "Carrera 1 Este # 18-30",
       "warnings": []
@@ -697,6 +745,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 10,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 20,
@@ -707,6 +756,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 10 20 30 SUR",
+      "canonicalIgac": "Carrera 10 20 30 Sur",
       "canonicalDian": "CR 10 20 30 SUR",
       "normalized": "Carrera 10 # 20-30 Sur",
       "warnings": []
@@ -724,6 +774,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 12,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "SUR",
       "crossNumber": 3,
@@ -734,6 +785,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 12 SUR 3 25 ESTE",
+      "canonicalIgac": "Calle 12 Sur 3 25 Este",
       "canonicalDian": "CL 12 SUR 3 25 ESTE",
       "normalized": "Calle 12 Sur # 3-25 Este",
       "warnings": []
@@ -750,6 +802,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 78,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "SUR",
       "crossNumber": 20,
@@ -760,6 +813,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 78 SUR 20 15",
+      "canonicalIgac": "Calle 78 Sur 20 15",
       "canonicalDian": "CL 78 SUR 20 15",
       "normalized": "Calle 78 Sur # 20-15",
       "warnings": [
@@ -778,6 +832,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 1,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "ESTE",
       "crossNumber": 18,
@@ -788,6 +843,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 1 ESTE 18 30",
+      "canonicalIgac": "Carrera 1 Este 18 30",
       "canonicalDian": "CR 1 ESTE 18 30",
       "normalized": "Carrera 1 Este # 18-30",
       "warnings": [
@@ -808,6 +864,7 @@
     "expected": {
       "streetType": "AV",
       "streetNumber": 6,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "NORTE",
       "crossNumber": 23,
@@ -818,6 +875,7 @@
       "locality": null,
       "department": null,
       "canonical": "AV 6 NORTE 23 45",
+      "canonicalIgac": "Avenida 6 Norte 23 45",
       "canonicalDian": "AV 6 NORTE 23 45",
       "normalized": "Avenida 6 Norte # 23-45",
       "warnings": [
@@ -838,6 +896,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 4,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": "OESTE",
       "crossNumber": 2,
@@ -848,6 +907,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 4 OESTE 2 50",
+      "canonicalIgac": "Carrera 4 Oeste 2 50",
       "canonicalDian": "CR 4 OESTE 2 50",
       "normalized": "Carrera 4 Oeste # 2-50",
       "warnings": [
@@ -875,6 +935,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 50,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 10,
@@ -885,6 +946,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 50 10 20",
+      "canonicalIgac": "Calle 50 10 20",
       "canonicalDian": "CL 50 10 20",
       "normalized": "Calle 50 # 10-20",
       "warnings": []
@@ -905,6 +967,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 50,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 10,
@@ -915,6 +978,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 50 10 20",
+      "canonicalIgac": "Calle 50 10 20",
       "canonicalDian": "CL 50 10 20",
       "normalized": "Calle 50 # 10-20",
       "warnings": []
@@ -932,6 +996,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -942,6 +1007,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30",
+      "canonicalIgac": "Carrera 45 12 30",
       "canonicalDian": "CR 45 12 30",
       "normalized": "Carrera 45 # 12-30",
       "warnings": []
@@ -958,6 +1024,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -968,6 +1035,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30",
+      "canonicalIgac": "Carrera 45 12 30",
       "canonicalDian": "CR 45 12 30",
       "normalized": "Carrera 45 # 12-30",
       "warnings": [
@@ -986,6 +1054,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 8,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 5,
@@ -996,6 +1065,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 8 5 30",
+      "canonicalIgac": "Calle 8 5 30",
       "canonicalDian": "CL 8 5 30",
       "normalized": "Calle 8 # 5-30",
       "warnings": [
@@ -1018,6 +1088,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 100,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 15,
@@ -1034,6 +1105,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 100 15 20 APTO 501",
+      "canonicalIgac": "Calle 100 15 20 AP 501",
       "canonicalDian": "CL 100 15 20 AP 501",
       "normalized": "Calle 100 # 15-20, Apartamento 501",
       "warnings": []
@@ -1051,6 +1123,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 100,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 15,
@@ -1067,6 +1140,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 100 15 20 APTO 501B",
+      "canonicalIgac": "Calle 100 15 20 AP 501B",
       "canonicalDian": "CL 100 15 20 AP 501B",
       "normalized": "Calle 100 # 15-20, Apartamento 501B",
       "warnings": []
@@ -1086,6 +1160,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 7,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 45,
@@ -1102,6 +1177,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 7 45 12 TO 2",
+      "canonicalIgac": "Carrera 7 45 12 TO 2",
       "canonicalDian": "CR 7 45 12 TO 2",
       "normalized": "Carrera 7 # 45-12, Torre 2",
       "warnings": []
@@ -1110,15 +1186,18 @@
     "maxConfidence": 1.0
   },
   {
-    "id": "local-lo-alias",
+    "id": "local-aliases",
+    "note": "'L' is IGAC 2024's code for Local.",
     "inputs": [
-      "Calle 10 # 5-51 Lo 101",
       "Calle 10 # 5-51 Local 101",
-      "CL 10 5 51 LC 101"
+      "CL 10 5 51 LC 101",
+      "Calle 10 # 5-51 Loc 101",
+      "Calle 10 # 5-51 L 101"
     ],
     "expected": {
       "streetType": "CL",
       "streetNumber": 10,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 5,
@@ -1135,12 +1214,50 @@
       "locality": null,
       "department": null,
       "canonical": "CL 10 5 51 LC 101",
+      "canonicalIgac": "Calle 10 5 51 L 101",
       "canonicalDian": "CL 10 5 51 LC 101",
       "normalized": "Calle 10 # 5-51, Local 101",
       "warnings": []
     },
     "minConfidence": 1.0,
     "maxConfidence": 1.0
+  },
+  {
+    "id": "local-lo-ambiguous",
+    "note": "LO is Local in the catastral table but Lote in IGAC 2024.",
+    "inputs": [
+      "Calle 10 # 5-51 Lo 101",
+      "CL 10 5 51 LO 101"
+    ],
+    "expected": {
+      "streetType": "CL",
+      "streetNumber": 10,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 5,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 51,
+      "complements": [
+        {
+          "type": "LOCAL",
+          "code": "LC",
+          "value": "101"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "CL 10 5 51 LC 101",
+      "canonicalIgac": "Calle 10 5 51 L 101",
+      "canonicalDian": "CL 10 5 51 LC 101",
+      "normalized": "Calle 10 # 5-51, Local 101",
+      "warnings": [
+        "AMBIGUOUS_COMPLEMENT"
+      ]
+    },
+    "minConfidence": 0.95,
+    "maxConfidence": 0.95
   },
   {
     "id": "oficina-aliases",
@@ -1154,6 +1271,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 11,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 93,
@@ -1170,6 +1288,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 11 93 46 OF 302",
+      "canonicalIgac": "Carrera 11 93 46 OF 302",
       "canonicalDian": "CR 11 93 46 OF 302",
       "normalized": "Carrera 11 # 93-46, Oficina 302",
       "warnings": []
@@ -1187,6 +1306,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 93,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 11,
@@ -1203,6 +1323,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 93 11 26 PI 4",
+      "canonicalIgac": "Calle 93 11 26 P 4",
       "canonicalDian": "CL 93 11 26 P 4",
       "normalized": "Calle 93 # 11-26, Piso 4",
       "warnings": []
@@ -1220,6 +1341,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 15,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 88,
@@ -1236,6 +1358,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 15 88 64 IN 3",
+      "canonicalIgac": "Carrera 15 88 64 IN 3",
       "canonicalDian": "CR 15 88 64 IN 3",
       "normalized": "Carrera 15 # 88-64, Interior 3",
       "warnings": []
@@ -1253,6 +1376,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 147,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 7,
@@ -1274,6 +1398,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 147 7 70 BL 4 APTO 302",
+      "canonicalIgac": "Calle 147 7 70 BQ 4 AP 302",
       "canonicalDian": "CL 147 7 70 BL 4 AP 302",
       "normalized": "Calle 147 # 7-70, Bloque 4, Apartamento 302",
       "warnings": []
@@ -1291,6 +1416,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 20,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 5,
@@ -1312,6 +1438,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 20 5 10 MZ C CA 12",
+      "canonicalIgac": "Calle 20 5 10 MZ C CS 12",
       "canonicalDian": "CL 20 5 10 MZ C CA 12",
       "normalized": "Calle 20 # 5-10, Manzana C, Casa 12",
       "warnings": []
@@ -1328,6 +1455,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 80,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 30,
@@ -1349,6 +1477,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 80 30 15 ET 2 CA 14",
+      "canonicalIgac": "Carrera 80 30 15 ET 2 CS 14",
       "canonicalDian": "CR 80 30 15 ET 2 CA 14",
       "normalized": "Carrera 80 # 30-15, Etapa 2, Casa 14",
       "warnings": []
@@ -1367,6 +1496,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 20,
@@ -1383,6 +1513,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45 20 30 CONJ LOS PINOS",
+      "canonicalIgac": "Calle 45 20 30 CO LOS PINOS",
       "canonicalDian": "CL 45 20 30 CONJ LOS PINOS",
       "normalized": "Calle 45 # 20-30, Conjunto LOS PINOS",
       "warnings": []
@@ -1401,6 +1532,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 43,
+      "streetName": null,
       "streetLetter": "A",
       "streetQuadrant": null,
       "crossNumber": 1,
@@ -1422,6 +1554,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 43A 1 50 ED SAN FERNANDO OF 801",
+      "canonicalIgac": "Carrera 43A 1 50 ED SAN FERNANDO OF 801",
       "canonicalDian": "CR 43A 1 50 ED SAN FERNANDO OF 801",
       "normalized": "Carrera 43A # 1-50, Edificio SAN FERNANDO, Oficina 801",
       "warnings": []
@@ -1439,6 +1572,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 13,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 68,
@@ -1455,6 +1589,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 13 68 25 BG 7",
+      "canonicalIgac": "Calle 13 68 25 BD 7",
       "canonicalDian": "CL 13 68 25 BG 7",
       "normalized": "Calle 13 # 68-25, Bodega 7",
       "warnings": []
@@ -1471,6 +1606,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 12,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 50,
@@ -1487,6 +1623,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 12 50 40 LT 3",
+      "canonicalIgac": "Calle 12 50 40 LO 3",
       "canonicalDian": "CL 12 50 40 LT 3",
       "normalized": "Calle 12 # 50-40, Lote 3",
       "warnings": []
@@ -1505,6 +1642,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 5,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 10,
@@ -1521,6 +1659,7 @@
       "locality": "Cartagena",
       "department": null,
       "canonical": "KR 5 10 20 BR SAN DIEGO",
+      "canonicalIgac": "Carrera 5 10 20 BR SAN DIEGO",
       "canonicalDian": "CR 5 10 20 BRR SAN DIEGO",
       "normalized": "Carrera 5 # 10-20, Barrio SAN DIEGO",
       "warnings": [
@@ -1542,6 +1681,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 147,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 7,
@@ -1563,6 +1703,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 147 7 70 TO 2 APTO 501",
+      "canonicalIgac": "Calle 147 7 70 TO 2 AP 501",
       "canonicalDian": "CL 147 7 70 TO 2 AP 501",
       "normalized": "Calle 147 # 7-70, Torre 2, Apartamento 501",
       "warnings": []
@@ -1579,6 +1720,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 15,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 88,
@@ -1600,6 +1742,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 15 88 64 IN 3 APTO 201",
+      "canonicalIgac": "Carrera 15 88 64 IN 3 AP 201",
       "canonicalDian": "CR 15 88 64 IN 3 AP 201",
       "normalized": "Carrera 15 # 88-64, Interior 3, Apartamento 201",
       "warnings": []
@@ -1616,6 +1759,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 93,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 11,
@@ -1632,6 +1776,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 93 11 26 PH 2",
+      "canonicalIgac": "Calle 93 11 26 PN 2",
       "canonicalDian": "CL 93 11 26 PH 2",
       "normalized": "Calle 93 # 11-26, Penthouse 2",
       "warnings": []
@@ -1640,15 +1785,16 @@
     "maxConfidence": 1.0
   },
   {
-    "id": "otro-consultorio-not-casa",
-    "note": "CS is Consultorio in both IGAC and DIAN, not Casa.",
+    "id": "otro-consultorio",
+    "note": "'Con' is IGAC 2024's code.",
     "inputs": [
       "Carrera 50 # 10-20 Consultorio 204",
-      "Carrera 50 # 10-20 Cs 204"
+      "Carrera 50 # 10-20 Con 204"
     ],
     "expected": {
       "streetType": "KR",
       "streetNumber": 50,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 10,
@@ -1665,8 +1811,159 @@
       "locality": null,
       "department": null,
       "canonical": "KR 50 10 20 CS 204",
+      "canonicalIgac": "Carrera 50 10 20 CON 204",
       "canonicalDian": "CR 50 10 20 CS 204",
       "normalized": "Carrera 50 # 10-20, Consultorio 204",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "otro-cs-ambiguous",
+    "note": "CS is Consultorio in the catastral and DIAN tables but Casa in IGAC 2024.",
+    "inputs": [
+      "Carrera 50 # 10-20 Cs 204",
+      "KR 50 10 20 CS 204"
+    ],
+    "expected": {
+      "streetType": "KR",
+      "streetNumber": 50,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 10,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 20,
+      "complements": [
+        {
+          "type": "OTRO",
+          "code": "CS",
+          "value": "204"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "KR 50 10 20 CS 204",
+      "canonicalIgac": "Carrera 50 10 20 CON 204",
+      "canonicalDian": "CR 50 10 20 CS 204",
+      "normalized": "Carrera 50 # 10-20, Consultorio 204",
+      "warnings": [
+        "AMBIGUOUS_COMPLEMENT"
+      ]
+    },
+    "minConfidence": 0.95,
+    "maxConfidence": 0.95
+  },
+  {
+    "id": "igac-2024-input-codes",
+    "note": "IGAC 2024 complement codes as input.",
+    "inputs": [
+      "Calle 147 # 7-70 Bq 4 Ap 302",
+      "CL 147 7 70 BQ 4 AP 302"
+    ],
+    "expected": {
+      "streetType": "CL",
+      "streetNumber": 147,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 7,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 70,
+      "complements": [
+        {
+          "type": "BLOQUE",
+          "code": "BL",
+          "value": "4"
+        },
+        {
+          "type": "APARTAMENTO",
+          "code": "APTO",
+          "value": "302"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "CL 147 7 70 BL 4 APTO 302",
+      "canonicalIgac": "Calle 147 7 70 BQ 4 AP 302",
+      "canonicalDian": "CL 147 7 70 BL 4 AP 302",
+      "normalized": "Calle 147 # 7-70, Bloque 4, Apartamento 302",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "igac-2024-input-codes-otro",
+    "inputs": [
+      "Carrera 15 # 88-64 Pn 2 Ga 3",
+      "KR 15 88 64 PN 2 GA 3"
+    ],
+    "expected": {
+      "streetType": "KR",
+      "streetNumber": 15,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 88,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 64,
+      "complements": [
+        {
+          "type": "OTRO",
+          "code": "PH",
+          "value": "2"
+        },
+        {
+          "type": "OTRO",
+          "code": "GJ",
+          "value": "3"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "KR 15 88 64 PH 2 GJ 3",
+      "canonicalIgac": "Carrera 15 88 64 PN 2 GA 3",
+      "canonicalDian": "CR 15 88 64 PH 2 GJ 3",
+      "normalized": "Carrera 15 # 88-64, Penthouse 2, Garaje 3",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "igac-2024-bodega",
+    "inputs": [
+      "Calle 13 # 68-25 Bd 7",
+      "CL 13 68 25 BD 7"
+    ],
+    "expected": {
+      "streetType": "CL",
+      "streetNumber": 13,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 68,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 25,
+      "complements": [
+        {
+          "type": "BODEGA",
+          "code": "BG",
+          "value": "7"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "CL 13 68 25 BG 7",
+      "canonicalIgac": "Calle 13 68 25 BD 7",
+      "canonicalDian": "CL 13 68 25 BG 7",
+      "normalized": "Calle 13 # 68-25, Bodega 7",
       "warnings": []
     },
     "minConfidence": 1.0,
@@ -1682,6 +1979,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 11,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 82,
@@ -1703,6 +2001,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 11 82 71 CECO ANDINO LC 305",
+      "canonicalIgac": "Carrera 11 82 71 CECO ANDINO L 305",
       "canonicalDian": "CR 11 82 71 CC ANDINO LC 305",
       "normalized": "Carrera 11 # 82-71, Centro comercial ANDINO, Local 305",
       "warnings": []
@@ -1720,6 +2019,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 43,
+      "streetName": null,
       "streetLetter": "A",
       "streetQuadrant": null,
       "crossNumber": 1,
@@ -1730,6 +2030,7 @@
       "locality": "Medellín",
       "department": "Antioquia",
       "canonical": "KR 43A 1 50",
+      "canonicalIgac": "Carrera 43A 1 50",
       "canonicalDian": "CR 43A 1 50",
       "normalized": "Carrera 43A # 1-50",
       "warnings": [
@@ -1749,6 +2050,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 72,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 10,
@@ -1759,6 +2061,7 @@
       "locality": "Bogotá D.C.",
       "department": null,
       "canonical": "CL 72 10 34",
+      "canonicalIgac": "Calle 72 10 34",
       "canonicalDian": "CL 72 10 34",
       "normalized": "Calle 72 # 10-34",
       "warnings": [
@@ -1778,6 +2081,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 100,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 5,
@@ -1788,6 +2092,7 @@
       "locality": "Cali",
       "department": "Valle del Cauca",
       "canonical": "KR 100 5 169",
+      "canonicalIgac": "Carrera 100 5 169",
       "canonicalDian": "CR 100 5 169",
       "normalized": "Carrera 100 # 5-169",
       "warnings": [
@@ -1807,6 +2112,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 50,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 80,
@@ -1823,6 +2129,7 @@
       "locality": "Barranquilla",
       "department": "Atlántico",
       "canonical": "KR 50 80 100 LC 2",
+      "canonicalIgac": "Carrera 50 80 100 L 2",
       "canonicalDian": "CR 50 80 100 LC 2",
       "normalized": "Carrera 50 # 80-100, Local 2",
       "warnings": [
@@ -1843,6 +2150,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 53,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 98,
@@ -1853,6 +2161,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 53 98 120",
+      "canonicalIgac": "Carrera 53 98 120",
       "canonicalDian": "CR 53 98 120",
       "normalized": "Carrera 53 # 98-120",
       "warnings": []
@@ -1871,6 +2180,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 27,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 36,
@@ -1881,6 +2191,7 @@
       "locality": "Bucaramanga",
       "department": null,
       "canonical": "KR 27 36 14",
+      "canonicalIgac": "Carrera 27 36 14",
       "canonicalDian": "CR 27 36 14",
       "normalized": "Carrera 27 # 36-14",
       "warnings": [
@@ -1900,6 +2211,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 36,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 27,
@@ -1916,6 +2228,7 @@
       "locality": "Bucaramanga",
       "department": "Santander",
       "canonical": "CL 36 27 52 OF 401",
+      "canonicalIgac": "Calle 36 27 52 OF 401",
       "canonicalDian": "CL 36 27 52 OF 401",
       "normalized": "Calle 36 # 27-52, Oficina 401",
       "warnings": [
@@ -1927,7 +2240,7 @@
   },
   {
     "id": "named-avenida-san-martin-cartagena",
-    "note": "Cartagena (Bocagrande). Named street; see open question 1.",
+    "note": "Cartagena (Bocagrande).",
     "inputs": [
       "Avenida San Martín # 8-129, Cartagena",
       "Av San Martín No 8-129, Cartagena"
@@ -1935,6 +2248,7 @@
     "expected": {
       "streetType": "AV",
       "streetNumber": null,
+      "streetName": "SAN MARTÍN",
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 8,
@@ -1944,24 +2258,29 @@
       "complements": [],
       "locality": "Cartagena",
       "department": null,
+      "canonical": "AV SAN MARTÍN 8 129",
+      "canonicalIgac": "Avenida San Martín 8 129",
+      "canonicalDian": "AV SAN MARTÍN 8 129",
+      "normalized": "Avenida San Martín # 8-129",
       "warnings": [
         "NAMED_STREET",
-        "MISSING_STREET_NUMBER",
         "LOCALITY_UNVERIFIED"
       ]
     },
-    "minConfidence": 0.6,
-    "maxConfidence": 0.6
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
   },
   {
     "id": "named-calle-de-la-factoria-cartagena",
-    "note": "Cartagena (historic centre).",
+    "note": "Cartagena (historic centre). Small words stay lowercase in title case.",
     "inputs": [
-      "Calle de la Factoría # 36-57"
+      "Calle de la Factoría # 36-57",
+      "Cl de la Factoría No 36-57"
     ],
     "expected": {
       "streetType": "CL",
       "streetNumber": null,
+      "streetName": "DE LA FACTORÍA",
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 36,
@@ -1971,13 +2290,16 @@
       "complements": [],
       "locality": null,
       "department": null,
+      "canonical": "CL DE LA FACTORÍA 36 57",
+      "canonicalIgac": "Calle de la Factoría 36 57",
+      "canonicalDian": "CL DE LA FACTORÍA 36 57",
+      "normalized": "Calle de la Factoría # 36-57",
       "warnings": [
-        "NAMED_STREET",
-        "MISSING_STREET_NUMBER"
+        "NAMED_STREET"
       ]
     },
-    "minConfidence": 0.6,
-    "maxConfidence": 0.6
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
   },
   {
     "id": "named-autopista-norte-bogota",
@@ -1989,6 +2311,7 @@
     "expected": {
       "streetType": "AUTOP",
       "streetNumber": null,
+      "streetName": "NORTE",
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 128,
@@ -1998,13 +2321,238 @@
       "complements": [],
       "locality": null,
       "department": null,
+      "canonical": "AUTOP NORTE 128 50",
+      "canonicalIgac": "Autopista Norte 128 50",
+      "canonicalDian": "AUT NORTE 128 50",
+      "normalized": "Autopista Norte # 128-50",
       "warnings": [
-        "NAMED_STREET",
-        "MISSING_STREET_NUMBER"
+        "NAMED_STREET"
       ]
     },
-    "minConfidence": 0.6,
-    "maxConfidence": 0.6
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "named-avenida-boyaca-bogota",
+    "note": "Bogotá.",
+    "inputs": [
+      "Avenida Boyacá # 12-30",
+      "Av. Boyacá No 12 - 30",
+      "AV BOYACÁ 12 30"
+    ],
+    "expected": {
+      "streetType": "AV",
+      "streetNumber": null,
+      "streetName": "BOYACÁ",
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 12,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 30,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "AV BOYACÁ 12 30",
+      "canonicalIgac": "Avenida Boyacá 12 30",
+      "canonicalDian": "AV BOYACÁ 12 30",
+      "normalized": "Avenida Boyacá # 12-30",
+      "warnings": [
+        "NAMED_STREET"
+      ]
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "named-street-with-complement",
+    "inputs": [
+      "Avenida Boyacá # 12-30 Local 5",
+      "AV BOYACÁ 12 30 LC 5"
+    ],
+    "expected": {
+      "streetType": "AV",
+      "streetNumber": null,
+      "streetName": "BOYACÁ",
+      "streetLetter": null,
+      "streetQuadrant": null,
+      "crossNumber": 12,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 30,
+      "complements": [
+        {
+          "type": "LOCAL",
+          "code": "LC",
+          "value": "5"
+        }
+      ],
+      "locality": null,
+      "department": null,
+      "canonical": "AV BOYACÁ 12 30 LC 5",
+      "canonicalIgac": "Avenida Boyacá 12 30 L 5",
+      "canonicalDian": "AV BOYACÁ 12 30 LC 5",
+      "normalized": "Avenida Boyacá # 12-30, Local 5",
+      "warnings": [
+        "NAMED_STREET"
+      ]
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "cali-attached-n-norte",
+    "note": "Cali. An attached N is Norte.",
+    "inputs": [
+      "Av 6N # 23N-45",
+      "Avenida 6N No 23N 45",
+      "AV 6N 23N 45"
+    ],
+    "expected": {
+      "streetType": "AV",
+      "streetNumber": 6,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": "NORTE",
+      "crossNumber": 23,
+      "crossLetter": null,
+      "crossQuadrant": "NORTE",
+      "plateNumber": 45,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "AV 6 NORTE 23 45 NORTE",
+      "canonicalIgac": "Avenida 6 Norte 23 45 Norte",
+      "canonicalDian": "AV 6 NORTE 23 45 NORTE",
+      "normalized": "Avenida 6 Norte # 23-45 Norte",
+      "warnings": [
+        "AMBIGUOUS_QUADRANT",
+        "UNCOMMON_QUADRANT"
+      ]
+    },
+    "minConfidence": 0.9,
+    "maxConfidence": 0.9
+  },
+  {
+    "id": "cali-attached-n-street-only",
+    "note": "Cali.",
+    "inputs": [
+      "Calle 25N # 5-30",
+      "CL 25N 5 30"
+    ],
+    "expected": {
+      "streetType": "CL",
+      "streetNumber": 25,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": "NORTE",
+      "crossNumber": 5,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 30,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "CL 25 NORTE 5 30",
+      "canonicalIgac": "Calle 25 Norte 5 30",
+      "canonicalDian": "CL 25 NORTE 5 30",
+      "normalized": "Calle 25 Norte # 5-30",
+      "warnings": [
+        "AMBIGUOUS_QUADRANT",
+        "UNCOMMON_QUADRANT"
+      ]
+    },
+    "minConfidence": 0.95,
+    "maxConfidence": 0.95
+  },
+  {
+    "id": "trailing-sur-on-calle",
+    "note": "Bogotá. A Calle's SUR, wherever it is written.",
+    "inputs": [
+      "Calle 48 # 5-20 Sur",
+      "Cl 48 No 5 20 sur",
+      "CL 48 5 20 SUR",
+      "Calle 48 Sur # 5-20"
+    ],
+    "expected": {
+      "streetType": "CL",
+      "streetNumber": 48,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": "SUR",
+      "crossNumber": 5,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 20,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "CL 48 SUR 5 20",
+      "canonicalIgac": "Calle 48 Sur 5 20",
+      "canonicalDian": "CL 48 SUR 5 20",
+      "normalized": "Calle 48 Sur # 5-20",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "trailing-este-on-carrera",
+    "note": "Bogotá. A Carrera's ESTE.",
+    "inputs": [
+      "Carrera 1 # 18-30 Este",
+      "KR 1 18 30 ESTE"
+    ],
+    "expected": {
+      "streetType": "KR",
+      "streetNumber": 1,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": "ESTE",
+      "crossNumber": 18,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 30,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "KR 1 ESTE 18 30",
+      "canonicalIgac": "Carrera 1 Este 18 30",
+      "canonicalDian": "CR 1 ESTE 18 30",
+      "normalized": "Carrera 1 Este # 18-30",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
+  },
+  {
+    "id": "trailing-sur-on-diagonal",
+    "note": "Diagonals are calle-like.",
+    "inputs": [
+      "Diagonal 45 # 16-20 Sur",
+      "DG 45 16 20 SUR"
+    ],
+    "expected": {
+      "streetType": "DG",
+      "streetNumber": 45,
+      "streetName": null,
+      "streetLetter": null,
+      "streetQuadrant": "SUR",
+      "crossNumber": 16,
+      "crossLetter": null,
+      "crossQuadrant": null,
+      "plateNumber": 20,
+      "complements": [],
+      "locality": null,
+      "department": null,
+      "canonical": "DG 45 SUR 16 20",
+      "canonicalIgac": "Diagonal 45 Sur 16 20",
+      "canonicalDian": "DG 45 SUR 16 20",
+      "normalized": "Diagonal 45 Sur # 16-20",
+      "warnings": []
+    },
+    "minConfidence": 1.0,
+    "maxConfidence": 1.0
   },
   {
     "id": "empty-input",
@@ -2015,6 +2563,7 @@
     "expected": {
       "streetType": null,
       "streetNumber": null,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": null,
@@ -2025,6 +2574,7 @@
       "locality": null,
       "department": null,
       "canonical": "",
+      "canonicalIgac": "",
       "canonicalDian": "",
       "normalized": "",
       "warnings": [
@@ -2043,6 +2593,7 @@
     "expected": {
       "streetType": null,
       "streetNumber": null,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": null,
@@ -2053,6 +2604,7 @@
       "locality": null,
       "department": null,
       "canonical": "",
+      "canonicalIgac": "",
       "canonicalDian": "",
       "normalized": "",
       "warnings": [
@@ -2074,6 +2626,7 @@
     "expected": {
       "streetType": null,
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2084,6 +2637,7 @@
       "locality": null,
       "department": null,
       "canonical": "45 12 30",
+      "canonicalIgac": "45 12 30",
       "canonicalDian": "45 12 30",
       "normalized": "45 # 12-30",
       "warnings": [
@@ -2102,6 +2656,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": null,
@@ -2112,6 +2667,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45",
+      "canonicalIgac": "Calle 45",
       "canonicalDian": "CL 45",
       "normalized": "Calle 45",
       "warnings": [
@@ -2130,6 +2686,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2140,6 +2697,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12",
+      "canonicalIgac": "Carrera 45 12",
       "canonicalDian": "CR 45 12",
       "normalized": "Carrera 45 # 12",
       "warnings": [
@@ -2158,6 +2716,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2168,6 +2727,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45 12 30",
+      "canonicalIgac": "Calle 45 12 30",
       "canonicalDian": "CL 45 12 30",
       "normalized": "Calle 45 # 12-30",
       "warnings": [
@@ -2186,6 +2746,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2196,6 +2757,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30",
+      "canonicalIgac": "Carrera 45 12 30",
       "canonicalDian": "CR 45 12 30",
       "normalized": "Carrera 45 # 12-30",
       "warnings": [
@@ -2214,6 +2776,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2224,6 +2787,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30",
+      "canonicalIgac": "Carrera 45 12 30",
       "canonicalDian": "CR 45 12 30",
       "normalized": "Carrera 45 # 12-30",
       "warnings": [
@@ -2242,6 +2806,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2252,6 +2817,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45 12 30",
+      "canonicalIgac": "Calle 45 12 30",
       "canonicalDian": "CL 45 12 30",
       "normalized": "Calle 45 # 12-30",
       "warnings": [
@@ -2270,6 +2836,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": null,
@@ -2280,6 +2847,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 45",
+      "canonicalIgac": "Calle 45",
       "canonicalDian": "CL 45",
       "normalized": "Calle 45",
       "warnings": [
@@ -2299,6 +2867,7 @@
     "expected": {
       "streetType": "CL",
       "streetNumber": 38,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 3,
@@ -2309,6 +2878,7 @@
       "locality": null,
       "department": null,
       "canonical": "CL 38 3 18 NORTE",
+      "canonicalIgac": "Calle 38 3 18 Norte",
       "canonicalDian": "CL 38 3 18 NORTE",
       "normalized": "Calle 38 # 3-18 Norte",
       "warnings": [
@@ -2328,6 +2898,7 @@
     "expected": {
       "streetType": "KR",
       "streetNumber": 45,
+      "streetName": null,
       "streetLetter": null,
       "streetQuadrant": null,
       "crossNumber": 12,
@@ -2344,6 +2915,7 @@
       "locality": null,
       "department": null,
       "canonical": "KR 45 12 30 LC 3",
+      "canonicalIgac": "Carrera 45 12 30 L 3",
       "canonicalDian": "CR 45 12 30 LC 3",
       "normalized": "Carrera 45 # 12-30, Local 3",
       "warnings": []

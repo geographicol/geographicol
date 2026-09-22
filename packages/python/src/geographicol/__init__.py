@@ -18,16 +18,13 @@ __all__ = [
 ]
 
 
-def normalize(input: str, style: Style = "igac", strict: bool = False) -> str:
+def normalize(input: str, style: Style = "catastral", strict: bool = False) -> str:
     """The canonical string for ``input``: ``parse(input, style, strict).canonical``."""
     return parse(input, style=style, strict=strict).canonical
 
 
 def is_valid(input: str) -> bool:
-    """True when confidence is at least 0.7 and both the street and cross numbers are present."""
+    """True when confidence is 0.7 or more, with a cross number and a street number or name."""
     result = parse(input)
-    return (
-        result.confidence >= 0.7
-        and result.street_number is not None
-        and result.cross_number is not None
-    )
+    has_street = result.street_number is not None or result.street_name is not None
+    return result.confidence >= 0.7 and has_street and result.cross_number is not None

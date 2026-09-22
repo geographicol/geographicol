@@ -2,7 +2,7 @@
 
 Normalize Colombian addresses into one canonical, structured form. Python 3.10+, zero dependencies.
 
-| Input | Canonical (`igac`, default) | `dian` style |
+| Input | Canonical (`catastral`, default) | `dian` style |
 |---|---|---|
 | `Cra 45 No 12 30 Loc 3` | `KR 45 12 30 LC 3` | `CR 45 12 30 LC 3` |
 | `cl. 26 nº 13-19` | `CL 26 13 19` | `CL 26 13 19` |
@@ -31,20 +31,24 @@ is_valid("Calle 45")  # False: no cross street
 
 ### Styles
 
-| `style` | Codes | Use it for |
+| `style` | Output | Use it for |
 |---|---|---|
-| `"igac"` (default) | IGAC cadastral table: `KR`, `APTO`, `PI` | Cadastre, municipalities, general storage |
-| `"dian"` | DIAN table: `CR`, `AP`, `P` | RUT, tax forms, accounting and ERP software |
-| `"readable"` | Full words: `Carrera 7 # 45-12, Torre 2` | Showing addresses to people |
+| `"catastral"` (default) | Compact cadastral codes: `KR 7 45 12 TO 2 APTO 501` | Storage, matching, a canonical key |
+| `"igac"` | IGAC's 2024 cadastral manual: `Carrera 7 45 12 TO 2 AP 501` | Cadastre and municipal systems |
+| `"dian"` | DIAN's table: `CR 7 45 12 TO 2 AP 501` | RUT, tax forms, accounting and ERP software |
+| `"readable"` | Full words: `Carrera 7 # 45-12, Torre 2, Apartamento 501` | Showing addresses to people |
 
-Every style accepts codes from both tables as input. `strict=True` doubles every confidence penalty.
+Every style accepts codes from all three tables as input. `strict=True` doubles every confidence penalty.
+
+Named streets are supported: `Avenida Boyacá # 12-30` gives `street_name` `"BOYACÁ"` and the canonical string `AV BOYACÁ 12 30`.
 
 ## `ParsedAddress`
 
 ```python
 parse("Cra 7 # 45-12 Torre 2 Apto 501, Bogotá")
 # ParsedAddress(
-#     street_type="KR", street_number=7, street_letter=None, street_quadrant=None,
+#     street_type="KR", street_number=7, street_name=None, street_letter=None,
+#     street_quadrant=None,
 #     cross_number=45, cross_letter=None, cross_quadrant=None, plate_number=12,
 #     complements=[
 #         Complement(type="TORRE", code="TO", value="2"),

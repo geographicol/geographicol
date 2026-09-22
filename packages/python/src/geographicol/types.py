@@ -23,14 +23,14 @@ ComplementType = Literal[
     "BARRIO",
     "OTRO",
 ]
-Style = Literal["igac", "dian", "readable"]
+Style = Literal["catastral", "igac", "dian", "readable"]
 
 
 @dataclass(frozen=True)
 class Complement:
     type: ComplementType
     code: str
-    """IGAC code, whatever the output style: "APTO", "TO", "PH", ..."""
+    """Catastral code, whatever the output style: "APTO", "TO", "PH", ..."""
     value: str
 
 
@@ -39,6 +39,8 @@ class ParsedAddress:
     # Vía principal
     street_type: StreetType | None = None
     street_number: int | None = None
+    street_name: str | None = None
+    """The name of a named street ("BOYACÁ"), when there is no number."""
     street_letter: str | None = None
     street_quadrant: Quadrant | None = None
 

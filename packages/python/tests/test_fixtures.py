@@ -12,7 +12,7 @@ FIXTURES_PATH = Path(__file__).resolve().parents[3] / "fixtures" / "addresses.js
 FIXTURES: list[dict[str, Any]] = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
 
 TOLERANCE = 1e-9
-STRING_KEYS = {"canonical", "canonicalDian", "normalized", "warnings"}
+STRING_KEYS = {"canonical", "canonicalIgac", "canonicalDian", "normalized", "warnings"}
 CASES = [
     pytest.param(group, input, id=f"{group['id']}[{index}]")
     for group in FIXTURES
@@ -41,6 +41,8 @@ def test_fixture(group: dict[str, Any], input: str) -> None:
         assert fields[snake_case(key)] == value, key
     if "canonical" in expected:
         assert result.canonical == expected["canonical"]
+    if "canonicalIgac" in expected:
+        assert parse(input, style="igac").canonical == expected["canonicalIgac"]
     if "canonicalDian" in expected:
         assert parse(input, style="dian").canonical == expected["canonicalDian"]
     if "normalized" in expected:

@@ -19,21 +19,28 @@ export const STREET_ALIASES: Record<StreetType, string[]> = {
   KM: ["kilometro", "km"],
 };
 
-/** Output codes and names per style. */
-export const STREET_OUTPUT: Record<StreetType, { igac: string; dian: string; readable: string }> = {
-  CL: { igac: "CL", dian: "CL", readable: "Calle" },
-  KR: { igac: "KR", dian: "CR", readable: "Carrera" },
-  AV: { igac: "AV", dian: "AV", readable: "Avenida" },
-  AK: { igac: "AK", dian: "AK", readable: "Avenida Carrera" },
-  AC: { igac: "AC", dian: "AC", readable: "Avenida Calle" },
-  DG: { igac: "DG", dian: "DG", readable: "Diagonal" },
-  TV: { igac: "TV", dian: "TV", readable: "Transversal" },
-  CIR: { igac: "CIR", dian: "CIR", readable: "Circular" },
-  CCV: { igac: "CCV", dian: "CRV", readable: "Circunvalar" },
-  AUTOP: { igac: "AUTOP", dian: "AUT", readable: "Autopista" },
-  VIA: { igac: "VIA", dian: "VIA", readable: "Vía" },
-  KM: { igac: "KM", dian: "KM", readable: "Kilómetro" },
+/** Output per style. `igac` follows IGAC's 2024 manual: full words, no abbreviations. */
+export const STREET_OUTPUT: Record<
+  StreetType,
+  { catastral: string; igac: string; dian: string; readable: string }
+> = {
+  CL: { catastral: "CL", igac: "Calle", dian: "CL", readable: "Calle" },
+  KR: { catastral: "KR", igac: "Carrera", dian: "CR", readable: "Carrera" },
+  AV: { catastral: "AV", igac: "Avenida", dian: "AV", readable: "Avenida" },
+  AK: { catastral: "AK", igac: "Avenida Carrera", dian: "AK", readable: "Avenida Carrera" },
+  AC: { catastral: "AC", igac: "Avenida Calle", dian: "AC", readable: "Avenida Calle" },
+  DG: { catastral: "DG", igac: "Diagonal", dian: "DG", readable: "Diagonal" },
+  TV: { catastral: "TV", igac: "Transversal", dian: "TV", readable: "Transversal" },
+  CIR: { catastral: "CIR", igac: "Circular", dian: "CIR", readable: "Circular" },
+  CCV: { catastral: "CCV", igac: "Circunvalar", dian: "CRV", readable: "Circunvalar" },
+  AUTOP: { catastral: "AUTOP", igac: "Autopista", dian: "AUT", readable: "Autopista" },
+  VIA: { catastral: "VIA", igac: "Vía", dian: "VIA", readable: "Vía" },
+  KM: { catastral: "KM", igac: "KM", dian: "KM", readable: "Kilómetro" },
 };
+
+/** Street kinds a trailing quadrant describes (section 5): SUR belongs to calles, ESTE to carreras. */
+export const CALLE_LIKE: StreetType[] = ["CL", "AC", "DG"];
+export const CARRERA_LIKE: StreetType[] = ["KR", "AK", "TV"];
 
 export const QUADRANT_ALIASES: Record<string, Quadrant> = {
   sur: "SUR",
@@ -44,7 +51,7 @@ export const QUADRANT_ALIASES: Record<string, Quadrant> = {
   occ: "OESTE",
 };
 
-/** Single-letter quadrants, only when standing alone. */
+/** Single-letter quadrants, only when standing alone. An attached "n" is NORTE (see parse.ts). */
 export const SINGLE_LETTER_QUADRANTS: Record<string, Quadrant> = { s: "SUR", e: "ESTE" };
 
 export const UNCOMMON_QUADRANTS: Quadrant[] = ["NORTE", "OESTE"];
@@ -54,6 +61,7 @@ export const NUMBER_MARKERS = ["no", "n", "nro", "num", "numero"];
 
 export interface ComplementCode {
   type: ComplementType;
+  catastral: string;
   igac: string;
   dian: string;
   readable: string;
@@ -62,115 +70,233 @@ export interface ComplementCode {
   nameValued?: boolean;
 }
 
+// Columns: catastral, igac (IGAC 2024 manual), dian. OTRO rows follow the 15 named types.
 export const COMPLEMENTS: ComplementCode[] = [
   {
     type: "APARTAMENTO",
-    igac: "APTO",
+    catastral: "APTO",
+    igac: "AP",
     dian: "AP",
     readable: "Apartamento",
     aliases: ["apartamento", "aparta", "apto", "apt", "ap"],
   },
-  { type: "TORRE", igac: "TO", dian: "TO", readable: "Torre", aliases: ["torre", "to", "tr"] },
+  {
+    type: "TORRE",
+    catastral: "TO",
+    igac: "TO",
+    dian: "TO",
+    readable: "Torre",
+    aliases: ["torre", "to", "tr"],
+  },
   {
     type: "LOCAL",
-    igac: "LC",
+    catastral: "LC",
+    igac: "L",
     dian: "LC",
     readable: "Local",
-    aliases: ["local", "loc", "lc", "lo"],
+    aliases: ["local", "loc", "lc", "lo", "l"],
   },
   {
     type: "OFICINA",
+    catastral: "OF",
     igac: "OF",
     dian: "OF",
     readable: "Oficina",
     aliases: ["oficina", "ofi", "ofc", "of"],
   },
-  { type: "PISO", igac: "PI", dian: "P", readable: "Piso", aliases: ["piso", "pi", "p"] },
+  {
+    type: "PISO",
+    catastral: "PI",
+    igac: "P",
+    dian: "P",
+    readable: "Piso",
+    aliases: ["piso", "pi", "p"],
+  },
   {
     type: "INTERIOR",
+    catastral: "IN",
     igac: "IN",
     dian: "IN",
     readable: "Interior",
     aliases: ["interior", "int", "in"],
   },
-  { type: "BLOQUE", igac: "BL", dian: "BL", readable: "Bloque", aliases: ["bloque", "blq", "bl"] },
+  {
+    type: "BLOQUE",
+    catastral: "BL",
+    igac: "BQ",
+    dian: "BL",
+    readable: "Bloque",
+    aliases: ["bloque", "blq", "bq", "bl"],
+  },
   {
     type: "MANZANA",
+    catastral: "MZ",
     igac: "MZ",
     dian: "MZ",
     readable: "Manzana",
     aliases: ["manzana", "mza", "mz"],
   },
-  { type: "CASA", igac: "CA", dian: "CA", readable: "Casa", aliases: ["casa", "ca"] },
-  { type: "ETAPA", igac: "ET", dian: "ET", readable: "Etapa", aliases: ["etapa", "et"] },
+  {
+    type: "CASA",
+    catastral: "CA",
+    igac: "CS",
+    dian: "CA",
+    readable: "Casa",
+    aliases: ["casa", "ca"],
+  },
+  {
+    type: "ETAPA",
+    catastral: "ET",
+    igac: "ET",
+    dian: "ET",
+    readable: "Etapa",
+    aliases: ["etapa", "et"],
+  },
   {
     type: "CONJUNTO",
-    igac: "CONJ",
+    catastral: "CONJ",
+    igac: "CO",
     dian: "CONJ",
     readable: "Conjunto",
-    aliases: ["conjunto", "conj", "cj"],
+    aliases: ["conjunto", "conj", "cj", "co"],
     nameValued: true,
   },
   {
     type: "EDIFICIO",
+    catastral: "ED",
     igac: "ED",
     dian: "ED",
     readable: "Edificio",
     aliases: ["edificio", "edif", "ed"],
     nameValued: true,
   },
-  { type: "BODEGA", igac: "BG", dian: "BG", readable: "Bodega", aliases: ["bodega", "bod", "bg"] },
-  { type: "LOTE", igac: "LT", dian: "LT", readable: "Lote", aliases: ["lote", "lt"] },
+  {
+    type: "BODEGA",
+    catastral: "BG",
+    igac: "BD",
+    dian: "BG",
+    readable: "Bodega",
+    aliases: ["bodega", "bod", "bd", "bg"],
+  },
+  {
+    type: "LOTE",
+    catastral: "LT",
+    igac: "LO",
+    dian: "LT",
+    readable: "Lote",
+    aliases: ["lote", "lt"],
+  },
   {
     type: "BARRIO",
+    catastral: "BR",
     igac: "BR",
     dian: "BRR",
     readable: "Barrio",
     aliases: ["barrio", "brr", "br", "bo"],
     nameValued: true,
   },
-  // OTRO codes (section 9)
-  { type: "OTRO", igac: "PH", dian: "PH", readable: "Penthouse", aliases: ["penthouse", "ph"] },
-  { type: "OTRO", igac: "GJ", dian: "GJ", readable: "Garaje", aliases: ["garaje", "gj"] },
-  { type: "OTRO", igac: "SS", dian: "SS", readable: "Semisótano", aliases: ["semisotano", "ss"] },
-  { type: "OTRO", igac: "CS", dian: "CS", readable: "Consultorio", aliases: ["consultorio", "cs"] },
-  { type: "OTRO", igac: "UN", dian: "UN", readable: "Unidad", aliases: ["unidad", "un"] },
   {
     type: "OTRO",
-    igac: "URB",
+    catastral: "PH",
+    igac: "PN",
+    dian: "PH",
+    readable: "Penthouse",
+    aliases: ["penthouse", "ph", "pn"],
+  },
+  {
+    type: "OTRO",
+    catastral: "GJ",
+    igac: "GA",
+    dian: "GJ",
+    readable: "Garaje",
+    aliases: ["garaje", "gj", "ga"],
+  },
+  {
+    type: "OTRO",
+    catastral: "SS",
+    igac: "SS",
+    dian: "SS",
+    readable: "Semisótano",
+    aliases: ["semisotano", "ss"],
+  },
+  {
+    type: "OTRO",
+    catastral: "CS",
+    igac: "CON",
+    dian: "CS",
+    readable: "Consultorio",
+    aliases: ["consultorio", "cs", "con"],
+  },
+  {
+    type: "OTRO",
+    catastral: "UN",
+    igac: "UN",
+    dian: "UN",
+    readable: "Unidad",
+    aliases: ["unidad", "un"],
+  },
+  {
+    type: "OTRO",
+    catastral: "URB",
+    igac: "UR",
     dian: "URB",
     readable: "Urbanización",
-    aliases: ["urbanizacion", "urb"],
+    aliases: ["urbanizacion", "urb", "ur"],
     nameValued: true,
   },
   {
     type: "OTRO",
-    igac: "SEC",
+    catastral: "SEC",
+    igac: "SC",
     dian: "SEC",
     readable: "Sector",
-    aliases: ["sector", "sec"],
+    aliases: ["sector", "sec", "sc"],
     nameValued: true,
   },
   {
     type: "OTRO",
+    catastral: "LM",
     igac: "LM",
     dian: "LM",
     readable: "Local mezzanine",
     aliases: ["local mezzanine", "lm"],
   },
-  { type: "OTRO", igac: "MN", dian: "MN", readable: "Mezzanine", aliases: ["mezzanine", "mn"] },
-  { type: "OTRO", igac: "TZ", dian: "TZ", readable: "Terraza", aliases: ["terraza", "tz"] },
   {
     type: "OTRO",
+    catastral: "MN",
+    igac: "MN",
+    dian: "MN",
+    readable: "Mezzanine",
+    aliases: ["mezzanine", "mn"],
+  },
+  {
+    type: "OTRO",
+    catastral: "TZ",
+    igac: "TZ",
+    dian: "TZ",
+    readable: "Terraza",
+    aliases: ["terraza", "tz"],
+  },
+  {
+    type: "OTRO",
+    catastral: "CECO",
     igac: "CECO",
     dian: "CC",
     readable: "Centro comercial",
     aliases: ["centro comercial", "ceco", "cc"],
     nameValued: true,
   },
-  { type: "OTRO", igac: "SU", dian: "SUITE", readable: "Suite", aliases: ["suite", "su"] },
   {
     type: "OTRO",
+    catastral: "SU",
+    igac: "SU",
+    dian: "SUITE",
+    readable: "Suite",
+    aliases: ["suite", "su"],
+  },
+  {
+    type: "OTRO",
+    catastral: "AGN",
     igac: "AGN",
     dian: "AGP",
     readable: "Agrupación",
@@ -179,6 +305,7 @@ export const COMPLEMENTS: ComplementCode[] = [
   },
   {
     type: "OTRO",
+    catastral: "VDA",
     igac: "VDA",
     dian: "VRD",
     readable: "Vereda",
@@ -187,24 +314,36 @@ export const COMPLEMENTS: ComplementCode[] = [
   },
   {
     type: "OTRO",
+    catastral: "SMZ",
     igac: "SMZ",
     dian: "SM",
     readable: "Supermanzana",
     aliases: ["supermanzana", "smz", "sm"],
   },
-  { type: "OTRO", igac: "PSJ", dian: "PJ", readable: "Pasaje", aliases: ["pasaje", "psj", "pj"] },
   {
     type: "OTRO",
-    igac: "PT",
+    catastral: "PSJ",
+    igac: "PJ",
+    dian: "PJ",
+    readable: "Pasaje",
+    aliases: ["pasaje", "psj", "pj"],
+  },
+  {
+    type: "OTRO",
+    catastral: "PT",
+    igac: "PR",
     dian: "POR",
     readable: "Portería",
-    aliases: ["porteria", "pt", "por"],
+    aliases: ["porteria", "pt", "por", "pr"],
   },
 ];
 
-export const COMPLEMENT_BY_IGAC: Record<string, ComplementCode> = Object.fromEntries(
-  COMPLEMENTS.map((c) => [c.igac, c]),
+export const COMPLEMENT_BY_CODE: Record<string, ComplementCode> = Object.fromEntries(
+  COMPLEMENTS.map((c) => [c.catastral, c]),
 );
+
+/** Aliases whose meaning differs between the tables (section 7): read as listed, but flagged. */
+export const AMBIGUOUS_COMPLEMENT_ALIASES = ["cs", "lo"];
 
 /** Confidence penalties (section 11). */
 export const PENALTIES: Record<string, number> = {
@@ -218,6 +357,7 @@ export const PENALTIES: Record<string, number> = {
   NAMED_STREET: 0,
   AMBIGUOUS_STREET_TYPE: 0.1,
   AMBIGUOUS_QUADRANT: 0.05,
+  AMBIGUOUS_COMPLEMENT: 0.05,
   UNCOMMON_QUADRANT: 0,
   LOCALITY_UNVERIFIED: 0,
 };
