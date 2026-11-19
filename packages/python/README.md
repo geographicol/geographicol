@@ -71,10 +71,70 @@ It normalizes the *syntax* of an address, offline, from the string alone. It doe
 
 - **Geocode:** no coordinates, no maps.
 - **Validate against real addresses:** `KR 999 999 99` parses fine even though it doesn't exist.
-- **Look up cities or neighbourhoods:** `locality` and `department` are captured as written and never checked (warning `LOCALITY_UNVERIFIED`).
+- **Look up cities or neighbourhoods:** `locality` and `department` are captured as written and never checked (warning `LOCALITY_UNVERIFIED`). To check them yourself, see [Municipality codes with colombia-open](#municipality-codes-with-colombia-open).
 - **Fix typos or fuzzy-match:** `Carerra` is not recognized.
 
 Those need data and infrastructure, and will be part of the geographicol API.
+
+## Municipality codes with colombia-open
+
+[colombia-open](https://pypi.org/project/colombia-open/) publishes DANE's municipality table, keyed by DIVIPOLA code. Matching geographicol's `locality` and `department` against that table gives each address a 5-digit municipality code. You can use the code to join the address to any other DANE-keyed data.
+
+```sh
+pip install geographicol colombia-open  # colombia-open needs Python 3.11+
+```
+
+```python
+import re
+import unicodedata
+
+import polars as pl
+from colombia_open import ColombiaOpen
+from geographicol import parse
+
+
+def clean(text):
+    """Same cleaning colombia-open uses for its *_clean columns."""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch)).lower()
+    return re.sub(r"[^a-z0-9]+", "_", text).strip("_")
+
+
+# DANE uses official names: "Santiago de Cali", "Bogotá, D.C.", "Cartagena de Indias".
+ALIASES = {
+    "bogota": "bogota_d_c", "bogota_dc": "bogota_d_c", "d_c": "bogota_d_c",
+    "cali": "santiago_de_cali", "cartagena": "cartagena_de_indias",
+}
+
+municipios = ColombiaOpen().load_polars("municipios").with_columns(
+    pl.col("nombre_dpto").map_elements(clean, return_dtype=pl.String).alias("dpto_clean")
+)
+
+
+def divipola(address):
+    """5-digit DIVIPOLA code for the address's municipality, or None if unknown or ambiguous."""
+    a = parse(address)
+    if not a.locality:
+        return None
+    name = ALIASES.get(clean(a.locality), clean(a.locality))
+    rows = municipios.filter(pl.col("nombre_mpio_clean") == name)
+    if a.department:
+        dpto = ALIASES.get(clean(a.department), clean(a.department))
+        rows = rows.filter(pl.col("dpto_clean") == dpto)
+    return rows["cod_mpio"][0] if rows.height == 1 else None
+
+
+divipola("Cra 45 # 12-30, Medellín, Antioquia")  # "05001"
+divipola("Cl 5 # 38-25, Cali, Valle del Cauca")  # "76001"
+divipola("Cl 49 # 50-21, Rionegro, Antioquia")   # "05615"
+divipola("Cra 27 # 36-14, Rionegro")             # None: Antioquia and Santander both have one
+```
+
+- **Ambiguous names:** 67 municipality names occur in more than one department. Without a department, the recipe returns `None` for these instead of guessing.
+- **First use:** `ColombiaOpen()` downloads its data bundle on first use and caches it. To work offline, set `COLOMBIA_OPEN_DATA_DIR`.
+- **Matching:** names must match exactly once accents and punctuation are removed. Short forms and misspellings need an entry in `ALIASES`.
+- **Data license:** DANE's tables are CC BY-SA 4.0. Credit DANE if you redistribute the codes.
+- **Version:** tested with colombia-open 0.12.0. Its built-in `resolve_municipios` isn't used here because that release doesn't take a department, so it can return the wrong Rionegro.
 
 ## License
 
